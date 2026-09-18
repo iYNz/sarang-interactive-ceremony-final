@@ -92,7 +92,8 @@
   position: absolute; z-index: 0; overflow: hidden;
   left: 31.562%; top: 26.481%; width: 37.760%; height: 37.500%;
   background: #05050a;
-  display: flex; align-items: center; justify-content: center;
+  /* 도미노 줄이 창 아래쪽을 지나므로 안내 문구는 위로 올려 붙인다 */
+  display: flex; align-items: flex-start; justify-content: center; padding-top: 13%;
 }
 .ab-shot__frame {
   position: relative; z-index: 1; display: block; width: 100%;
@@ -104,20 +105,16 @@
   text-align: center; line-height: 1.4;
 }
 .ab-ph i { font-style: normal; font-size: 11.5px; color: rgba(255,255,255,.3); }
-/* 1안에만 붙는 실물 도미노 — 목업 바닥에 세 장을 세워 "무대에 물건이 있다"를 알린다.
-   정교한 그림이 아니라 있고 없음의 표시다. */
-/* 좌 · 우로 나눠 세우는 안은 뺐다 — 가운데 한 줄이다. */
-.ab-obj {
-  position: absolute; z-index: 2; left: 50%; bottom: 12%;
-  display: flex; align-items: flex-end; gap: 6px;
-  transform: translateX(-50%) perspective(300px) rotateX(18deg);
+/* 무대 도형 — 사람 픽토그램과 실물 도미노. js/ab.js 가 그린다.
+   목업 프레임(z 1) 위에 얹혀 바닥에 놓인 것처럼 보인다. 05p 사람 레이어와
+   같은 viewBox(1920×1080)라 두 장의 무대가 정확히 겹친다. */
+.ab-stage {
+  position: absolute; inset: 0; z-index: 2;
+  width: 100%; height: 100%; pointer-events: none;
 }
-.ab-obj i {
-  display: block; width: 11px; height: 30px; border-radius: 2px;
-  background: linear-gradient(180deg, rgba(255,255,255,.82), rgba(255,255,255,.5));
-  box-shadow: 0 3px 10px rgba(0,0,0,.6);
-}
-.ab-obj i:last-child { transform: rotate(16deg); transform-origin: bottom left; }
+/* 2안 — 같은 줄이 LED 창 안에 그려진다. 창 안쪽 레이어라 목업 프레임에 가려지고,
+   그래서 무대가 아니라 화면에 있는 것으로 읽힌다. */
+.ab-inled { position: absolute; inset: 0; width: 100%; height: 100%; }
 .ab-note {
   margin-top: 2px; padding: 13px 16px; border-radius: 10px;
   font-size: 14px; line-height: 1.62; color: rgba(255,255,255,.62);

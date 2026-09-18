@@ -21,3 +21,11 @@
   for = "/js/*"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# assets/for-img 는 생성용 재료라 덱에서 부르지 않는다. 배포에서 빼 둔다 —
+# publish 가 루트라 그냥 두면 그대로 공개 URL 로 열린다.
+[[redirects]]
+  from = "/assets/for-img/*"
+  to = "/"
+  status = 404
+  force = true

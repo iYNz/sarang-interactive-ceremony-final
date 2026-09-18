@@ -44,22 +44,35 @@
   stroke-linecap: round; stroke-linejoin: round;
 }
 
-/* ================= 02p · 확정된 것 ================= */
-.fx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 20px; }
+/* ================= 02p · 확정된 것 =================
+   여덟 항목을 한 덩어리로 늘어놓으면 전부 같은 무게로 보인다. 연출 · 화면 · 현장
+   세 묶음으로 나누면 「어디를 정한 이야기인지」가 먼저 오고 항목은 그 안에서 읽힌다.
+   현장 묶음만 가로로 눕혀 아래에 깐다 — 둘뿐이라 세로로 세우면 칸이 비고,
+   가로로 두면 「그리고 현장에서는」으로 마무리된다. */
+.fx-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 30px 28px; align-content: center; }
+.fx-g { display: flex; flex-direction: column; gap: 11px; min-width: 0; }
+.fx-g--wide { grid-column: 1 / -1; }
+.fx-g__row { display: grid; grid-template-columns: 1fr 1fr; gap: 11px 28px; }
+.fx-g__k {
+  align-self: flex-start; padding: 3px 11px; border-radius: 999px;
+  font-size: 12px; font-weight: var(--fw-bold); letter-spacing: .09em;
+  color: #fff; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+}
 .fx {
-  display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 4px 16px;
+  display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 3px 14px;
   align-items: baseline;
-  padding: 14px 18px; border-radius: 12px;
+  padding: 16px 20px; border-radius: 12px;
   background: rgba(255,255,255,.045); border: 1px solid var(--card-line);
 }
 .fx__k {
   grid-row: span 2;
-  font-size: 12.5px; font-weight: var(--fw-bold); letter-spacing: .02em;
-  color: rgba(255,255,255,.46); white-space: nowrap;
+  font-size: 12px; font-weight: var(--fw-bold); letter-spacing: .02em;
+  color: rgba(255,255,255,.4); white-space: nowrap;
 }
-.fx__v { font-size: 16.5px; font-weight: var(--fw-bold); color: #fff; line-height: 1.4; }
-.fx__s { font-size: 13.5px; line-height: 1.55; color: rgba(255,255,255,.55); }
-.fx__s b { color: rgba(255,255,255,.88); font-weight: var(--fw-semibold); }
+/* 값과 설명의 차이를 벌린다 — 훑을 때 굵은 줄만 먼저 들어와야 여덟 개가 읽힌다 */
+.fx__v { font-size: 17.5px; font-weight: var(--fw-bold); color: #fff; line-height: 1.38; letter-spacing: -.012em; }
+.fx__s { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,.5); }
+.fx__s b { color: rgba(255,255,255,.85); font-weight: var(--fw-semibold); }
 
 /* ================= 03p · 1안 · 2안 ================= */
 .ab-lay { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; }

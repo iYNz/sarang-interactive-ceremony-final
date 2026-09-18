@@ -113,7 +113,7 @@
 .ab-note b { color: #fff; font-weight: var(--fw-semibold); }
 
 /* ================= 04p · 연출 흐름 · 시간 배분 ================= */
-.fl-steps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 34px; }
+.fl-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 34px; }
 .fl-s {
   position: relative;
   display: flex; flex-direction: column; gap: 3px;
@@ -246,6 +246,9 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
 /* 로고가 없는 구간임을 색이 아니라 밀도로 말한다 — 눌러 두면 "비어 있다"가 읽힌다 */
 .lg-w--off { opacity: .55; border-style: dashed; }
 .lg-w--on { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.28); }
+/* 세 번째 줄은 시점이 아니라 결론이다 — 앞 둘과 같은 카드로 두면 단계로 읽힌다 */
+.lg-w--sum { background: none; border-style: dashed; border-color: rgba(255,255,255,.22); }
+.lg-w--sum .lg-w__k { color: var(--hl); }
 
 .lg-demo { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .lg-stage { position: relative; width: 84%; align-self: center; border-radius: 14px; overflow: hidden; }

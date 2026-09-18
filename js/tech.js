@@ -78,9 +78,9 @@
   /* 화면 비주얼이 아직 없어 ph(이름 판)로 둔다. img 를 채우면 그대로 그림이 된다. */
   var VIEWS = [
     { ph: '도미노가 넘어간다', cap: '<b>CUT 01</b> · 도미노 판정',
-      people: [765, 1171], walk: [-215, 215] },   /* 영역 밖 → 지정 자리 */
+      people: [878, 1058], walk: [-215, 215] },   /* 영역 밖 → 가운데 나란히 */
     { ph: '마을이 밝아진다', cap: '<b>CUT 02 ~ 05</b> · 판정 없음',
-      people: [640, 1296], walk: [125, -125] }    /* 지정 자리 → 영역 밖 */
+      people: [740, 1196], walk: [138, -138] }    /* 가운데 → 양옆으로 물러나 관람 */
   ];
 
   var media = document.querySelector('#techShot .tech-shot__media');

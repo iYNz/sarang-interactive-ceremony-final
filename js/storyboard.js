@@ -73,10 +73,19 @@
       say: '-', snd: '-',
       l1: '-', l2: '-' },
 
+    /* 마지막 프레임 — 좌 후원사 · 우 사랑의열매. 배경 그림은 아직 없다.
+       두 로고는 화면에 얹히는 별개 레이어이고, 자리는 08p 세이프박스와 같은
+       규격(30% × 26%, 안쪽으로 6%)이다. 기업이 바뀌면 왼쪽만 갈아 끼운다. */
     { no: 'CUT 10', ph: '-',
+      logos: true,
       say: '-', snd: '-',
       l1: '-', l2: '-' }
   ];
+
+  /* 동선 가이드는 처음에 전부 꺼져 있다. 컷마다 사람이 서 있으면 어느 컷이
+     무대이고 어느 컷이 화면 안 장면인지 헷갈린다 — 그림을 먼저 보고, 필요할 때
+     「사람 위치」 버튼으로 켠다. */
+  var GUIDE_DEFAULT = false;
 
   var strip = document.getElementById('sbStrip');
   var dotsWrap = document.getElementById('sbDots');
@@ -239,10 +248,22 @@
         }).join('')
       : c.img
       ? '<img src="' + c.img + '" alt="' + esc(c.no) + '" draggable="false" />'
+      /* 로고 컷은 번호 · 이름을 띄우지 않는다. 두 로고 사이에 커다란 숫자가 끼면
+         그것도 화면에 들어가는 요소처럼 읽힌다. 배경이 비었다는 건 카드 아래
+         「CUT 10」과 assets/led/README.md 가 이미 말하고 있다. */
+      : c.logos
+      ? ''
       : '<span class="sb-led__ph">' +
           '<span class="sb-led__no">' + String(i + 1).padStart(2, '0') + '</span>' +
           '<span class="sb-led__t">' + esc(c.ph) + '</span>' +
         '</span>';
+    /* 로고는 화면 위에 얹히는 별개 레이어다 — 생성물에 굽지 않는다.
+       기업마다 종횡비가 달라(KB 국문 lockup 은 가로로 매우 길다) 고정 상자 안에
+       contain 으로 넣는다. 자리 · 크기는 08p 세이프박스와 같은 값이다. */
+    if (c.logos) {
+      screen += '<img class="sb-logo sb-logo--l" src="assets/logo/kb.webp" alt="후원사 로고" draggable="false" />' +
+                '<img class="sb-logo sb-logo--r" src="assets/logo/sarang.png" alt="사랑의열매" draggable="false" />';
+    }
     /* lit  — 기념촬영 컷은 장내 조명이 올라오므로 목업을 어둡게 누르지 않는다
        full — 그림 자체가 이미 행사장 전경인 컷. 목업 창 안에 넣으면 방 안에 방이
               들어가므로 프레임을 걷고 화면 레이어를 카드 전체로 편다. 동선 가이드는
@@ -340,7 +361,7 @@
      실제 순서이기 때문이다. */
   var vsel = CUTS.map(function () { return 0; });   /* 카드 → 현재 변형 */
   var ssel = CUTS.map(function () { return 0; });   /* 카드 → 현재 단계 */
-  var goff = CUTS.map(function () { return false; }); /* 카드 → 「사람 위치」로 직접 끈 상태 */
+  var goff = CUTS.map(function () { return !GUIDE_DEFAULT; }); /* 카드 → 가이드를 끈 상태 */
   var setVariant = [];          /* 카드 인덱스 → 이미지·버튼을 바꾸는 함수 */
   var setGuide = [];            /* 카드 인덱스 → 가이드를 넣고 빼는 함수 */
 
@@ -391,7 +412,7 @@
     reset: function (fromEnd) {
       idx = fromEnd ? CUTS.length - 1 : 0;
       CUTS.forEach(function (c, i) {
-        goff[i] = false;             /* 손으로 걷어낸 상태는 슬라이드를 다시 열면 풀린다 */
+        goff[i] = !GUIDE_DEFAULT;    /* 손으로 켠 상태는 슬라이드를 다시 열면 풀린다 */
         applyStep(i, i === idx && fromEnd ? stepsOf(i) - 1 : 0, i === idx);
       });
       render();

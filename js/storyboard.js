@@ -25,11 +25,14 @@
      그 한 장에서만 의미가 있고, 나머지는 화면 안 장면이라 얹으면 방해만 된다. */
   var CUTS = [
     { no: 'CUT 01', ph: '-',
-      img: 'assets/led/cut01.jpg', full: true,
+      img: 'assets/led/cut01.jpg',
       sensor: 'KINECT', tag: 'DOMINO DOWN',
-      people: [878, 1058], walk: [-215, 215], arrive: true,
-      floor: [{ x: 45.73, y: 73.15, type: 'mark', rot: -73 },
-              { x: 55.10, y: 73.15, type: 'mark', rot:  73 }],
+      /* 실물 도미노 두 장 — 화면 속 줄이 무대 바닥으로 이어져 나온 부분이다.
+         두 분은 그 줄을 사이에 두고 양옆에 선다. 걸어 들어오는 모션은 없다. */
+      dominoes: [{ y: 845 }, { y: 765 }],
+      people: [845, 1091],
+      floor: [{ x: 44.01, y: 78.24, type: 'mark', rot: -73 },
+              { x: 56.82, y: 78.24, type: 'mark', rot:  73 }],
       say: '-', snd: '-',
       l1: '-', l2: '-' },
 
@@ -215,13 +218,52 @@
     '</g>';
   }
 
+  /* ---- 실물 도미노 ----
+     LED 앞 무대 바닥에 서는 장들이다. 화면 속 줄이 그대로 이어져 나온 부분이라
+     화면 중앙선(x 968) 위에 선다.
+     크기를 컷마다 적지 않는다 — 바닥 소실선(y 490)에서 얼마나 떨어졌는지가 곧
+     깊이이고 거기서 폭 · 높이 · 두께가 함께 나온다. 기준값은 i125 에서 맨 앞
+     장을 실측한 것이다(바닥 845 에서 폭 84 · 앞면 높이 234 · 두께 44).
+     높이는 사람 키(352)의 67% — 가슴과 배꼽 사이다.
+
+     윗면을 함께 그린다. 평평한 사각형만으로는 두 장이 안 갈린다 — 뒷장이 앞장
+     안에 거의 포개져서 계단 하나처럼 보인다. i125 에서 두 장이 갈려 보이는 것도
+     윗면 덕이다. */
+  var D = { cx: 968, vp: 490, ref: 355, w: 84, h: 234, dep: 44 };
+  function dominoSvg(d) {
+    var cx = d.x || D.cx;
+    var s = (d.y - D.vp) / D.ref;                    /* 앞면 깊이 */
+    var yb = d.y - D.dep * s;                        /* 뒷면이 닿는 바닥 */
+    var sb = (yb - D.vp) / D.ref;
+    var w = D.w * s,  x0 = cx - w / 2,  x1 = cx + w / 2,  yT = d.y - D.h * s;
+    var wb = D.w * sb, b0 = cx - wb / 2, b1 = cx + wb / 2, yB = yb - D.h * sb;
+    return '<polygon points="' + [x0, yT, x1, yT, b1, yB, b0, yB].join(' ') + '"' +
+             ' fill="#23232a" stroke="#f5f5f7" stroke-width="3.5" stroke-linejoin="round"/>' +
+           '<rect x="' + x0 + '" y="' + yT + '" width="' + w + '" height="' + (d.y - yT) + '"' +
+             ' fill="#0a0a0c" stroke="#f5f5f7" stroke-width="3.5" stroke-linejoin="round"/>';
+  }
+  /* 한 <g> 에 묶어 투명도를 그룹째 먹인다. 장마다 반투명을 주면 겹친 자리만
+     짙어져 앞장 안에 뒷장 그림자가 박힌 것처럼 보인다. 그룹으로 묶으면 먼저
+     불투명하게 합쳐진 뒤 한 번만 투과되므로, 앞장이 뒷장을 제대로 가린다.
+     뒤 장부터 그린다. */
+  function dominoesHtml(list) {
+    if (!list || !list.length) return '';
+    return '<g class="sb-domino" opacity=".6">' +
+             list.slice().sort(function (a, b) { return a.y - b.y; }).map(dominoSvg).join('') +
+           '</g>';
+  }
+
+  /* 사람은 맨 앞 도미노와 같은 바닥선에 선다 — 셋이 한 깊이에 있어야
+     「이 줄을 둘이 함께 민다」가 한 장면으로 읽힌다. */
+  var FOOT = 845;
   function peopleHtml(c) {
-    if (!c.people) return '';
+    if (!c.people && !c.dominoes) return '';
     var b = c.banner;
-    var inner = c.people.map(function (x, n) {
-      return personSvg(x, 790, c.walk && c.walk[n]);
+    var inner = dominoesHtml(c.dominoes);
+    inner += (c.people || []).map(function (x, n) {
+      return personSvg(x, FOOT, c.walk && c.walk[n]);
     }).join('');
-    if (b && c.people.length === 2) {
+    if (b && c.people && c.people.length === 2) {
       inner += bannerSvg(c.people[0] - b.pad, c.people[1] + b.pad, b.cy, b.h);
     }
     return '<svg class="sb-people" viewBox="0 0 1920 1080" preserveAspectRatio="none">' +

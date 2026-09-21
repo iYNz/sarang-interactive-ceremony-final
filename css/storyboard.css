@@ -86,6 +86,11 @@
 }
 .sb-shot__screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
+/* 그림 자체가 행사장 전경인 컷 — 목업 프레임 없이 카드 전체를 쓴다.
+   창 안에 넣으면 방 안에 방이 들어가고, 안 그래도 좁은 창에서 도미노 줄이 뭉개진다.
+   좌표계는 그대로 16:9 라 동선 가이드(.sb-guide / .sb-people)는 손대지 않는다. */
+.sb-shot--full .sb-shot__screen { left: 0; top: 0; width: 100%; height: 100%; }
+
 /* 단계가 있는 컷 — 상태들을 겹쳐 두고 ← → 로 한 장씩 넘긴다.
    src 를 갈아끼우면 딱 끊겨 보이므로 불투명도 트랜지션으로 받는다. */
 .sb-shot__screen img.sb-var { opacity: 0; transition: opacity .55s var(--ease-soft); }

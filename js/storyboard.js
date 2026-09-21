@@ -25,7 +25,7 @@
      그 한 장에서만 의미가 있고, 나머지는 화면 안 장면이라 얹으면 방해만 된다. */
   var CUTS = [
     { no: 'CUT 01', ph: '-',
-      img: 'assets/led/cut01.jpg',
+      img: 'assets/led/cut01.jpg', full: true,
       sensor: 'KINECT', tag: 'DOMINO DOWN',
       people: [878, 1058], walk: [-215, 215], arrive: true,
       floor: [{ x: 45.73, y: 73.15, type: 'mark', rot: -73 },
@@ -243,10 +243,14 @@
           '<span class="sb-led__no">' + String(i + 1).padStart(2, '0') + '</span>' +
           '<span class="sb-led__t">' + esc(c.ph) + '</span>' +
         '</span>';
-    /* lit — 기념촬영 컷은 장내 조명이 올라오므로 목업을 어둡게 누르지 않는다 */
-    return '<span class="sb-shot' + (c.lit ? ' sb-shot--lit' : '') + '">' +
+    /* lit  — 기념촬영 컷은 장내 조명이 올라오므로 목업을 어둡게 누르지 않는다
+       full — 그림 자체가 이미 행사장 전경인 컷. 목업 창 안에 넣으면 방 안에 방이
+              들어가므로 프레임을 걷고 화면 레이어를 카드 전체로 편다. 동선 가이드는
+              같은 16:9 좌표계를 쓰므로 그대로 얹힌다. */
+    return '<span class="sb-shot' + (c.lit ? ' sb-shot--lit' : '') + (c.full ? ' sb-shot--full' : '') + '">' +
              '<span class="sb-shot__screen">' + screen + '</span>' +
-             '<img class="sb-shot__frame" src="assets/mockup/mockup10.png" alt="행사장 LED 월 설치 뷰" draggable="false" />' +
+             (c.full ? '' :
+               '<img class="sb-shot__frame" src="assets/mockup/mockup10.png" alt="행사장 LED 월 설치 뷰" draggable="false" />') +
              /* 동선 가이드는 비워 두고 필요할 때 채워 넣는다 — DOM 에 들어오는
                 순간이 곧 걸음 애니메이션의 시작점이라, 마크업에 미리 깔아 두면
                 그 컷을 펼치기도 전에 이미 다 끝나 있다. */

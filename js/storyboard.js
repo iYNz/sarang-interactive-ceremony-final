@@ -29,10 +29,9 @@
       sensor: 'KINECT', tag: 'DOMINO DOWN',
       /* 실물 도미노 두 장 — 화면 속 줄이 무대 바닥으로 이어져 나온 부분이다.
          두 분은 그 줄을 사이에 두고 양옆에 선다. 걸어 들어오는 모션은 없다. */
-      dominoes: [{ y: 845 }, { y: 765 }],
-      people: [845, 1091],
-      floor: [{ x: 44.01, y: 78.24, type: 'mark', rot: -73 },
-              { x: 56.82, y: 78.24, type: 'mark', rot:  73 }],
+      dominoes: [{ y: 806 }, { y: 719 }],
+      people: [883, 1053],
+      guideOn: true,
       say: '-', snd: '-',
       l1: '-', l2: '-' },
 
@@ -85,10 +84,10 @@
       l1: '-', l2: '-' }
   ];
 
-  /* 동선 가이드는 처음에 전부 꺼져 있다. 컷마다 사람이 서 있으면 어느 컷이
-     무대이고 어느 컷이 화면 안 장면인지 헷갈린다 — 그림을 먼저 보고, 필요할 때
-     「사람 위치」 버튼으로 켠다. */
-  var GUIDE_DEFAULT = false;
+  /* 동선 가이드는 컷별로 켠다(`guideOn`). 모든 컷에 사람이 서 있으면 어느 컷이
+     무대이고 어느 컷이 화면 안 장면인지 헷갈리므로 기본은 꺼짐이고, 무대에서
+     미는 CUT 01 에만 켜 둔다. 나머지는 「사람 위치」 버튼으로 켠다. */
+  function guideDefault(i) { return !!CUTS[i].guideOn; }
 
   var strip = document.getElementById('sbStrip');
   var dotsWrap = document.getElementById('sbDots');
@@ -159,11 +158,12 @@
      wx 를 주면 그 자리로 걸어오는 루프가 붙는다 — cx 는 도착 지점이고 wx 는
      출발 지점까지의 오프셋이다. 방향 표시도 같은 <g> 안에 그려 함께 움직인다. */
   var P = { h: 345, sx: 0.5, sy: 1.02, bx: 1.21 };
-  function personSvg(cx, footY, wx) {
-    var H = P.h * P.sy;
-    var hr = P.h * 0.13 * P.sx;                     /* 정원 반지름 */
+  function personSvg(cx, footY, wx, k) {
+    k = k || 1;
+    var H = P.h * P.sy * k;
+    var hr = P.h * 0.13 * P.sx * k;                 /* 정원 반지름 */
     var headY = footY - H + hr;
-    var hw = P.h * 0.21 * P.sx * P.bx;              /* 몸통 반폭 */
+    var hw = P.h * 0.21 * P.sx * P.bx * k;          /* 몸통 반폭 */
     var shY = headY + hr * 1.7;                     /* 목 간격 */
     var r = hw * 0.62;                              /* 좌우 동일한 라운드 */
     var body = 'M' + (cx - hw) + ' ' + footY + 'V' + (shY + r) +
@@ -218,25 +218,45 @@
     '</g>';
   }
 
+  /* ---- 무대 원근 ----
+     소실점을 좌 · 우 벽 밑선에서 실측했다. 두 벽이 각각 독립으로 x 967.6 을
+     가리켜(화면 정중앙) 맞은 값이라고 본다.
+
+       왼쪽 벽 밑선   y = -0.5250x + 945.3
+       오른쪽 벽 밑선 y =  0.5310x -  76.4
+       만나는 점      (967.6, 437.4)
+
+     한때 여기에 490 을 썼다. 그래서 무대 위 물체가 죄다 실제보다 덜 커지고,
+     화면 속 줄과 이어지는 자리에서 각도가 꺾여 보였다. */
+  var VP = { x: 968, y: 437 };
+
   /* ---- 실물 도미노 ----
      LED 앞 무대 바닥에 서는 장들이다. 화면 속 줄이 그대로 이어져 나온 부분이라
-     화면 중앙선(x 968) 위에 선다.
-     크기를 컷마다 적지 않는다 — 바닥 소실선(y 490)에서 얼마나 떨어졌는지가 곧
-     깊이이고 거기서 폭 · 높이 · 두께가 함께 나온다. 기준값은 i125 에서 맨 앞
-     장을 실측한 것이다(바닥 845 에서 폭 84 · 앞면 높이 234 · 두께 44).
-     높이는 사람 키(352)의 67% — 가슴과 배꼽 사이다.
+     크기를 임의로 정할 수 없다 — 이음매에서 화면 속 맨 앞 장과 굵기가 맞아야
+     하고, 거기서 기울기가 결정된다.
+
+       LED 창 : x 606..1332 / y 285..692 (1920×1080 을 0.378 로 줄여 넣는다)
+       화면 맨 앞 장 : 원본 y 1010 · 폭 149  →  창 안에서 y 665.6 · 폭 56.3
+       기울기 k = 56.3 / (665.6 - 437) = 0.2468
+
+     높이는 화면 속 장들의 비율(높이/폭 = 2.11)을 그대로 쓴다. 이래야 같은
+     물건이 계속 오는 것으로 보인다. 결과적으로 도미노 높이는 같은 깊이에 선
+     사람 키의 62% — 가슴과 배꼽 사이라는 합의와도 맞는다.
+
+     자리는 화면 속 줄의 간격을 그대로 이어 잡는다. 같은 간격으로 늘어선 줄은
+     1/(y - 소실선) 이 일정하게 줄어든다 — 화면 속 두 장에서 그 값을 재어
+     같은 폭만큼 두 번 더 빼면 806 과 719 가 나온다.
 
      윗면을 함께 그린다. 평평한 사각형만으로는 두 장이 안 갈린다 — 뒷장이 앞장
-     안에 거의 포개져서 계단 하나처럼 보인다. i125 에서 두 장이 갈려 보이는 것도
-     윗면 덕이다. */
-  var D = { cx: 968, vp: 490, ref: 355, w: 84, h: 234, dep: 44 };
+     안에 거의 포개져서 계단 하나처럼 보인다. */
+  var D = { kw: 0.2468, kh: 0.5203, kdep: 0.0978 };
   function dominoSvg(d) {
-    var cx = d.x || D.cx;
-    var s = (d.y - D.vp) / D.ref;                    /* 앞면 깊이 */
-    var yb = d.y - D.dep * s;                        /* 뒷면이 닿는 바닥 */
-    var sb = (yb - D.vp) / D.ref;
-    var w = D.w * s,  x0 = cx - w / 2,  x1 = cx + w / 2,  yT = d.y - D.h * s;
-    var wb = D.w * sb, b0 = cx - wb / 2, b1 = cx + wb / 2, yB = yb - D.h * sb;
+    var cx = d.x || VP.x;
+    var s = d.y - VP.y;                              /* 앞면 깊이 */
+    var yb = d.y - D.kdep * s;                       /* 뒷면이 닿는 바닥 */
+    var sb = yb - VP.y;
+    var w = D.kw * s,  x0 = cx - w / 2,  x1 = cx + w / 2,  yT = d.y - D.kh * s;
+    var wb = D.kw * sb, b0 = cx - wb / 2, b1 = cx + wb / 2, yB = yb - D.kh * sb;
     return '<polygon points="' + [x0, yT, x1, yT, b1, yB, b0, yB].join(' ') + '"' +
              ' fill="#23232a" stroke="#f5f5f7" stroke-width="3.5" stroke-linejoin="round"/>' +
            '<rect x="' + x0 + '" y="' + yT + '" width="' + w + '" height="' + (d.y - yT) + '"' +
@@ -248,20 +268,29 @@
      뒤 장부터 그린다. */
   function dominoesHtml(list) {
     if (!list || !list.length) return '';
-    return '<g class="sb-domino" opacity=".6">' +
+    return '<g class="sb-domino" opacity=".7">' +
              list.slice().sort(function (a, b) { return a.y - b.y; }).map(dominoSvg).join('') +
            '</g>';
   }
 
-  /* 사람은 맨 앞 도미노와 같은 바닥선에 선다 — 셋이 한 깊이에 있어야
-     「이 줄을 둘이 함께 민다」가 한 장면으로 읽힌다. */
-  var FOOT = 845;
+  /* 사람은 맨 앞 도미노보다 **앞에** 선다. 나란히 세우면 옆에 서 있는 것이지
+     미는 것으로 안 보인다. 바닥선을 890 으로 내려 맨 앞 장(806)보다 84 앞에
+     두고, 좌우로는 그 장과 조금 겹치게 좁혀 세운다 — 밀 수 있는 거리다.
+
+     사람도 깊이에 따라 커진다. 픽토그램만 고정 크기로 두면 도미노는 원근을
+     타는데 사람만 안 타서, 앞으로 나올수록 작아 보인다.
+     기준은 「같은 깊이에서 도미노가 사람 키의 62%」다. 도미노 기울기가
+     0.5203 이므로 사람 키의 기울기는 0.5203/0.62 = 0.839 이고, 지금 픽토그램
+     크기(352)가 그 기울기와 맞는 깊이는 419 다. */
+  var FOOT = 890, PERSON_REF = 419;
   function peopleHtml(c) {
     if (!c.people && !c.dominoes) return '';
     var b = c.banner;
+    var foot = c.foot || FOOT;
+    var k = (foot - VP.y) / PERSON_REF;
     var inner = dominoesHtml(c.dominoes);
     inner += (c.people || []).map(function (x, n) {
-      return personSvg(x, FOOT, c.walk && c.walk[n]);
+      return personSvg(x, foot, c.walk && c.walk[n], k);
     }).join('');
     if (b && c.people && c.people.length === 2) {
       inner += bannerSvg(c.people[0] - b.pad, c.people[1] + b.pad, b.cy, b.h);
@@ -403,7 +432,7 @@
      실제 순서이기 때문이다. */
   var vsel = CUTS.map(function () { return 0; });   /* 카드 → 현재 변형 */
   var ssel = CUTS.map(function () { return 0; });   /* 카드 → 현재 단계 */
-  var goff = CUTS.map(function () { return !GUIDE_DEFAULT; }); /* 카드 → 가이드를 끈 상태 */
+  var goff = CUTS.map(function (c, i) { return !guideDefault(i); }); /* 카드 → 가이드를 끈 상태 */
   var setVariant = [];          /* 카드 인덱스 → 이미지·버튼을 바꾸는 함수 */
   var setGuide = [];            /* 카드 인덱스 → 가이드를 넣고 빼는 함수 */
 
@@ -454,7 +483,7 @@
     reset: function (fromEnd) {
       idx = fromEnd ? CUTS.length - 1 : 0;
       CUTS.forEach(function (c, i) {
-        goff[i] = !GUIDE_DEFAULT;    /* 손으로 켠 상태는 슬라이드를 다시 열면 풀린다 */
+        goff[i] = !guideDefault(i);  /* 손으로 바꾼 상태는 슬라이드를 다시 열면 풀린다 */
         applyStep(i, i === idx && fromEnd ? stepsOf(i) - 1 : 0, i === idx);
       });
       render();

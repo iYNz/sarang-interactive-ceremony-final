@@ -65,21 +65,19 @@
   position: absolute; left: 0; top: 50%; width: 100%;
   aspect-ratio: 16 / 9; transform: translateY(-50%);
 }
-/* 퍼포먼스는 조명 OFF 상태다. 목업만 어둡게 눌러 LED가 유일한 광원으로 보이게 한다.
-   LED 창은 투명으로 빠져 있어 이 필터의 영향을 받지 않는다. */
+/* 목업은 밝게 둔다.
+   실제 퍼포먼스는 조명 OFF 라 한동안 목업을 brightness(.42) 로 눌러 LED 가 유일한
+   광원으로 보이게 했다. 사실에는 맞지만 열 컷을 이어 보면 화면 전체가 계속 어둡고,
+   정작 봐야 할 LED 안 그림까지 가라앉아 보인다. 시안 자료는 무엇이 들어가는지
+   보여주는 것이 먼저이므로 조명 상태는 멘트로 적고 그림은 밝게 둔다. */
 .sb-shot__frame {
   position: absolute; inset: 0; z-index: 1;
   width: 100%; height: 100%; object-fit: fill; display: block;
-  filter: brightness(.42) contrast(1.06) saturate(.9);
-  transition: filter .6s var(--ease);
   /* 마우스를 통과시켜 LED 창(아래 레이어)이 직접 호버를 받게 한다 */
   pointer-events: none;
 }
-/* 활성 카드의 LED 위에서는 4p 타일과 같은 돋보기 커서 — 눌러서 확대한다는 신호 */
 /* 2p 는 확대를 걸지 않는다 — 발표 중 오클릭으로 흐름이 끊긴다.
    같은 화면들은 4p 프레임 그리드에서 모두 크게 볼 수 있다. */
-/* 기념촬영 컷 — 장내 조명이 올라온 상태 */
-.sb-shot--lit .sb-shot__frame { filter: brightness(1) contrast(1) saturate(1); }
 /* 투명으로 빠진 LED 창 좌표 — mockup10 의 알파 bbox 실측값
    (1920×1080 기준 x 606..1330 / y 286..690). 생성 이미지는 이 안에만 들어간다. */
 .sb-shot__screen {

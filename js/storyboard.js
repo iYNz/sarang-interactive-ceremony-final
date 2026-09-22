@@ -335,11 +335,12 @@
       screen += '<img class="sb-logo sb-logo--l" src="assets/logo/kb.webp" alt="후원사 로고" draggable="false" />' +
                 '<img class="sb-logo sb-logo--r" src="assets/logo/sarang.png" alt="사랑의열매" draggable="false" />';
     }
-    /* lit  — 기념촬영 컷은 장내 조명이 올라오므로 목업을 어둡게 누르지 않는다
-       full — 그림 자체가 이미 행사장 전경인 컷. 목업 창 안에 넣으면 방 안에 방이
+    /* full — 그림 자체가 이미 행사장 전경인 컷. 목업 창 안에 넣으면 방 안에 방이
               들어가므로 프레임을 걷고 화면 레이어를 카드 전체로 편다. 동선 가이드는
-              같은 16:9 좌표계를 쓰므로 그대로 얹힌다. */
-    return '<span class="sb-shot' + (c.lit ? ' sb-shot--lit' : '') + (c.full ? ' sb-shot--full' : '') + '">' +
+              같은 16:9 좌표계를 쓰므로 그대로 얹힌다.
+       한때 lit 플래그로 「이 컷만 목업을 밝게」를 골랐다. 이제 모든 컷이 밝으므로
+       뺐다(css/storyboard.css 의 .sb-shot__frame 참고). */
+    return '<span class="sb-shot' + (c.full ? ' sb-shot--full' : '') + '">' +
              '<span class="sb-shot__screen">' + screen + '</span>' +
              (c.full ? '' :
                '<img class="sb-shot__frame" src="assets/mockup/mockup10.png" alt="행사장 LED 월 설치 뷰" draggable="false" />') +

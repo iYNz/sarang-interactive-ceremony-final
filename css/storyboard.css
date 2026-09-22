@@ -256,8 +256,11 @@
 }
 
 /* ---------- 바닥 캡션 ---------- */
+/* 캡션이 읽히도록 바닥만 눌러 주는 그라데이션이다.
+   46% 였을 때는 위쪽 끝이 LED 창 아래쪽까지 올라와 그림을 같이 어둡게 했다.
+   절반(23%)이면 캡션 두 줄과 소리 한 줄을 덮고 창에는 닿지 않는다. */
 .sb-card__grad {
-  position: absolute; left: 0; right: 0; bottom: 0; height: 46%;
+  position: absolute; left: 0; right: 0; bottom: 0; height: 23%;
   background: linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.5) 46%, transparent 100%);
   pointer-events: none;
 }

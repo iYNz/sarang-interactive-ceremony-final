@@ -277,7 +277,6 @@
 
   /* ---- 백그라운드 프리로드 ---- */
   function preloadAll() {
-    var boot = document.getElementById('boot');
     function bgPreloadRest() {
       var seen = {}, list = [];
       slides.forEach(function (slide) {
@@ -299,9 +298,17 @@
       }
       for (var c = 0; c < 4; c++) pump();
     }
-    booted = true;
-    if (boot) { boot.classList.add('is-done'); setTimeout(function () { boot.classList.add('is-hidden'); }, 700); }
     bgPreloadRest();
+  }
+
+  /* 가림막(#boot)은 무대 배율이 잡히기 전의 한 프레임을 가리는 용도다.
+     스크립트가 body 끝에 있어 fit() 이 첫 페인트 전에 끝나므로, 배율이 잡힌
+     다음 프레임에 바로 걷는다. 페이드도 타이머도 없다 — 예전에는 .6s 페이드에
+     700ms 를 더 기다려서, 새로고침할 때마다 1.3초 동안 검은 화면이 남았다. */
+  function unveil() {
+    booted = true;
+    var boot = document.getElementById('boot');
+    if (boot) boot.classList.add('is-hidden');
   }
 
   /* ---- 초기화 ---- */
@@ -311,5 +318,6 @@
   if (hudTotal) hudTotal.textContent = String(slides.length).padStart(2, '0');
   fit();
   render();
+  unveil();
   preloadAll();
 })();

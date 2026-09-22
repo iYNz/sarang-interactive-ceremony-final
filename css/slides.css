@@ -71,8 +71,9 @@
 .cover-caption__brand { font-size: 15px; color: rgba(255,255,255,.66); letter-spacing: 0.04em; }
 
 /* 초기 게이트: 03 오른쪽 영상 로드까지 검정 화면(로딩 UI 없음) */
-#boot { position: fixed; inset: 0; z-index: 9999; background: #000; transition: opacity .6s ease; }
-#boot.is-done { opacity: 0; pointer-events: none; }
+/* 무대 배율이 잡히기 전의 한 프레임만 가린다. 페이드는 걸지 않는다 —
+   deck.js 가 fit() 직후 바로 걷으므로 페이드가 있으면 그만큼 검은 화면이 남는다. */
+#boot { position: fixed; inset: 0; z-index: 9999; background: #000; }
 #boot.is-hidden { display: none; }
 
 /* 표지 전체화면 버튼 (호버 시 중앙 표시 · honam 방식) */

@@ -74,53 +74,6 @@
 .fx__s { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,.5); }
 .fx__s b { color: rgba(255,255,255,.85); font-weight: var(--fw-semibold); }
 
-/* ================= 03p · 1안 · 2안 ================= */
-.ab-lay { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; }
-.ab-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
-.ab-head { display: flex; align-items: center; gap: 10px; }
-.ab-no {
-  padding: 3px 11px; border-radius: 999px;
-  font-family: var(--font-num); font-size: 12px; font-weight: 800; letter-spacing: .03em;
-  color: #0b0b0b; background: var(--hl);
-}
-.ab-head b { font-size: 18px; font-weight: var(--fw-bold); color: #fff; }
-/* 2안이 우리 권장이지만 시안에서 티를 내지 않는다 — 고르는 자리이므로 무게를 같이 둔다 */
-/* 목업은 16:9 라 칸 폭이 그대로 높이가 된다 — 칸을 다 쓰면 아래 목록 · 박스까지
-   더해져 본문이 제목 위로 올라온다. 폭을 줄여 높이를 깎는다. */
-.ab-shot { position: relative; width: 82%; align-self: center; border-radius: 12px; overflow: hidden; }
-.ab-shot__screen {
-  position: absolute; z-index: 0; overflow: hidden;
-  left: 31.562%; top: 26.481%; width: 37.760%; height: 37.500%;
-  background: #05050a;
-  /* 도미노 줄이 창 아래쪽을 지나므로 안내 문구는 위로 올려 붙인다 */
-  display: flex; align-items: flex-start; justify-content: center; padding-top: 13%;
-}
-.ab-shot__frame {
-  position: relative; z-index: 1; display: block; width: 100%;
-  filter: brightness(.42) contrast(1.06) saturate(.9);
-}
-.ab-ph {
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
-  font-size: 13px; font-weight: var(--fw-semibold); color: rgba(255,255,255,.44);
-  text-align: center; line-height: 1.4;
-}
-.ab-ph i { font-style: normal; font-size: 11.5px; color: rgba(255,255,255,.3); }
-/* 무대 도형 — 사람 픽토그램과 실물 도미노. js/ab.js 가 그린다.
-   목업 프레임(z 1) 위에 얹혀 바닥에 놓인 것처럼 보인다. 05p 사람 레이어와
-   같은 viewBox(1920×1080)라 두 장의 무대가 정확히 겹친다. */
-.ab-stage {
-  position: absolute; inset: 0; z-index: 2;
-  width: 100%; height: 100%; pointer-events: none;
-}
-/* 2안 — 같은 줄이 LED 창 안에 그려진다. 창 안쪽 레이어라 목업 프레임에 가려지고,
-   그래서 무대가 아니라 화면에 있는 것으로 읽힌다. */
-.ab-inled { position: absolute; inset: 0; width: 100%; height: 100%; }
-.ab-note {
-  margin-top: 2px; padding: 13px 16px; border-radius: 10px;
-  font-size: 14px; line-height: 1.62; color: rgba(255,255,255,.62);
-  background: rgba(255,255,255,.03); border: 1px dashed rgba(255,255,255,.18);
-}
-.ab-note b { color: #fff; font-weight: var(--fw-semibold); }
 
 /* ================= 04p · 연출 흐름 · 시간 배분 ================= */
 .fl-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 34px; }
@@ -388,3 +341,63 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
 .sc-t em { font-style: normal; font-size: 12.5px; line-height: 1.45; color: rgba(255,255,255,.5); }
 .sc-t--hot { background: rgba(224,49,49,.12); border-color: rgba(224,49,49,.55); }
 .sc-t--hot .sc-t__d { color: var(--warn-lit); }
+
+/* ---------- 05p 고르실 것 (1안·2안 + 중앙 오브제 합본) ----------
+   왼쪽은 글, 오른쪽은 그림이다. 시작점(①)은 앞 장 CUT 01 에서 이미 봤으므로
+   여기서는 짚기만 하고, 아직 한 번도 못 본 오브제(②)에 시각물을 몰아 준다. */
+.ch-lay { display: grid; grid-template-columns: 0.84fr 1fr; gap: 34px; align-items: start; }
+.ch-col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.ch-hd { display: flex; align-items: center; gap: 10px; }
+.ch-no {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--hl); color: #0b0b0b;
+  font-size: 15px; font-weight: var(--fw-bold); flex: 0 0 auto;
+}
+.ch-hd b { font-size: 18px; font-weight: var(--fw-bold); color: #fff; }
+.ch-lead { font-size: 14px; line-height: 1.7; color: rgba(255,255,255,.62); }
+.ch-lead b { color: #fff; font-weight: var(--fw-semibold); }
+
+.ch-opt {
+  border: 1px solid rgba(255,255,255,.1); border-radius: 12px;
+  padding: 14px 16px 15px; background: rgba(255,255,255,.025);
+}
+.ch-opt__k {
+  display: inline-block; margin-bottom: 6px;
+  font-size: 12px; font-weight: var(--fw-bold); letter-spacing: .06em;
+  color: #0b0b0b; background: var(--hl); padding: 3px 9px; border-radius: 5px;
+}
+.ch-opt > b { display: block; font-size: 16px; font-weight: var(--fw-bold); color: #fff; margin-bottom: 8px; }
+.ch-opt .list { margin-bottom: 10px; }
+.ch-opt .list > li { font-size: 13.5px; line-height: 1.6; }
+.ch-opt__n {
+  font-size: 12.5px; line-height: 1.62; color: rgba(255,255,255,.5);
+  padding-top: 9px; border-top: 1px solid rgba(255,255,255,.07);
+}
+.ch-opt__n b { color: rgba(255,255,255,.8); font-weight: var(--fw-semibold); }
+.ch-ref {
+  font-size: 12.5px; line-height: 1.6; color: rgba(255,255,255,.44);
+  padding-left: 11px; border-left: 2px solid rgba(255,255,255,.16);
+}
+.ch-ref b { color: rgba(255,255,255,.72); font-weight: var(--fw-semibold); }
+/* 합본 안에서는 오브제 도식이 오른쪽 칸 폭에 맞춰 한 단 좁아진다 */
+.ch-col--obj .ob-lay { grid-template-columns: 1.18fr 1fr; gap: 22px; }
+
+/* ---------- 07p 일정 칸반 ----------
+   4p(연출 흐름)의 막대 도식을 그대로 쓴다. 덱 안에서 같은 모양이 같은 뜻
+   (시간 순서)으로 쓰이는 편이 익히기 쉽다. 날짜가 들어가므로 번호 칸만 넓힌다. */
+.sc-kanban { margin-bottom: 26px; }
+.sc-kanban .fl-s__n {
+  font-size: 13px; letter-spacing: 0;
+  color: rgba(255,255,255,.55); font-weight: var(--fw-bold);
+}
+.sc-kanban .fl-s--peak .fl-s__n { color: var(--warn-lit); }
+.sc-out--order { border-color: rgba(224,49,49,.4); background: rgba(224,49,49,.07); }
+
+/* ---------- 06p 판정 도식 ----------
+   사람은 판정과 무관하므로 흐리게 둔다 — 지우면 「그럼 사람은 어디 있나」가
+   남고, 움직이게 하면 다시 판정에 관여하는 것처럼 보인다. */
+.tech-ppl { opacity: .5; }
+/* 트리거가 걸린 뷰 — 영역 테두리가 살아난다 */
+.tech-sense.is-fired .tech-zone__line { stroke: var(--warn-lit); stroke-opacity: .95; }
+.tech-sense.is-fired .tech-zone__fill { fill: var(--warn-lit); fill-opacity: .1; }

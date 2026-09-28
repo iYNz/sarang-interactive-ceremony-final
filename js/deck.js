@@ -21,12 +21,9 @@
   var SECTION = {
     cover: '표지',
     fixed: '확정된 것',
-    ab: '1안 · 2안',
-    flow: '연출 흐름',
     storyboard: '컷 스토리보드',
-    object: '중앙 오브제',
     logo: '로고 · 재사용',
-    tone: '톤 · 사운드',
+    choose: '고르실 것',
     tech: '기술 · 운영',
     scope: '범위 · 일정',
     'logo-end': '마무리',
@@ -97,7 +94,7 @@
   /* 슬라이드 안에서 단계를 갖는 장들 — 그 단계를 다 쓴 뒤에야 슬라이드가 넘어간다.
      각 모듈이 {next, prev, reset} 을 전역에 올리고, 여기서는 슬라이드 id 로만 찾는다.
      새 장을 추가할 때 이 표에 한 줄 넣으면 된다. */
-  var GATES = { storyboard: 'SB', object: 'OBJ', tech: 'TECH' };
+  var GATES = { storyboard: 'SB', choose: 'OBJ', tech: 'TECH' };
   function gate() {
     var k = GATES[slides[current].id];
     return k ? window[k] : null;

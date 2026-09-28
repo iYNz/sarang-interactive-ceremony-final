@@ -237,7 +237,7 @@
         ' stroke-linecap="round" stroke-linejoin="round"/>' +
     '</g>';
   }
-  window.SB_PERSON = personSvg;   /* 3p(tech.js) 가 같은 도형을 쓴다 */
+  window.SB_PERSON = personSvg;   /* 06p(tech.js) 가 같은 도형을 쓴다 */
 
   /* 기념촬영 컷 — 두 사람이 가로로 긴 전달판을 함께 든다.
      몸 앞에서 드는 것이므로 사람보다 나중에(위에) 그린다.
@@ -310,6 +310,9 @@
              list.slice().sort(function (a, b) { return a.y - b.y; }).map(dominoSvg).join('') +
            '</g>';
   }
+  /* 06p(tech.js) 가 같은 도미노를 같은 자리에 그린다 — 판정 영역이 무엇을
+     감싸는지 보이려면 05p 와 픽셀 단위로 같은 물건이어야 한다. */
+  window.SB_DOMINOES = dominoesHtml;
 
   /* 사람은 맨 앞 도미노보다 **앞에** 선다. 나란히 세우면 옆에 서 있는 것이지
      미는 것으로 안 보인다. 바닥선을 890 으로 내려 맨 앞 장(806)보다 84 앞에

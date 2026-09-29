@@ -927,26 +927,26 @@
 
 /* ---------- 06p · 1안 판정 (도미노가 영역에서 사라진다) ----------
    07p 와 같은 상자를 쓰고 같은 박자로 돈다. 다른 것은 무엇이 그 안에 있느냐뿐.
-   루프 1.8초 = 서 있음 0.75초 + 쓰러짐 0.35초 + 빈 상자 0.5초 + 되돌아옴 0.2초.
+   루프 1.8초 = 서 있음 0.79초 + 사라짐 0.14초 + 빈 상자 0.65초 + 되돌아옴 0.22초.
 
-   밑변을 축으로 눕힌다. rotate 만으로는 「넘어갔다」가 되고 그 뒤로도 화면에
-   남으므로, 다 눕고 나서 투명도를 떨어뜨려 영역에서 **빠져나가게** 한다. */
+   한때 밑변을 축으로 눕혔다. 실물 도미노는 화면 쪽(뒤)으로 넘어가는데 화면에서는
+   옆으로 자빠지는 것밖에 안 되고, 그 방향이 틀리니 눈에 먼저 걸렸다.
+   판정이 보는 것은 **있느냐 없느냐**뿐이므로 그냥 없앤다. */
 @keyframes t1Fall {
-  0%, 41%  { transform: rotate(0deg);  opacity: 1; }
-  60%      { transform: rotate(78deg); opacity: 1; }
-  68%      { transform: rotate(78deg); opacity: 0; }
-  88%      { transform: rotate(78deg); opacity: 0; }
-  100%     { transform: rotate(0deg);  opacity: 1; }
+  0%, 44%  { opacity: 1; }
+  52%      { opacity: 0; }
+  88%      { opacity: 0; }
+  100%     { opacity: 1; }
 }
-.t1-dom {
-  transform-box: fill-box; transform-origin: 50% 100%;
-  animation: t1Fall 1.8s var(--ease-soft) infinite;
-}
-/* 상자가 비는 순간 테두리가 붉게 살아난다 — 그 사라짐이 곧 트리거다 */
+.t1-dom { animation: t1Fall 1.8s var(--ease-soft) infinite; }
+
+/* 상자가 비는 순간 테두리가 살아난다 — 그 사라짐이 곧 트리거다.
+   붉은색을 쓰다가 노랑으로 바꿨다. 07p 의 게이지가 금색이라, 두 장이 같은 색으로
+   「걸렸다」를 말해야 한 쌍으로 읽힌다. 붉은색은 오류처럼도 보인다. */
 @keyframes t1Fire {
-  0%, 63%   { stroke: #fff; stroke-opacity: .85; }
-  68%, 88%  { stroke: #ff4d4d; stroke-opacity: 1; }
-  100%      { stroke: #fff; stroke-opacity: .85; }
+  0%, 48%   { stroke: #fff;     stroke-opacity: .85; }
+  56%, 88%  { stroke: #ffd166;  stroke-opacity: 1; }
+  100%      { stroke: #fff;     stroke-opacity: .85; }
 }
 .t1-zone { animation: t1Fire 1.8s var(--ease-soft) infinite; }
 

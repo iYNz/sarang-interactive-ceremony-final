@@ -69,9 +69,8 @@
             ' rx="7" fill="#fff" fill-opacity=".11" stroke="#fff" stroke-opacity=".85"' +
             ' stroke-width="4" stroke-dasharray="18 10"/>' +
 
-          /* 실물 도미노 — 이 상자 안에 서 있다가 쓰러지며 빠져나간다.
-             「사라졌다」를 말로 적는 대신 실제로 없애는 것이 이 장의 전부다.
-             밑변을 축으로 돌린다(CSS .t1-dom). */
+          /* 실물 도미노 — 이 상자 안에 서 있다가 사라진다.
+             「사라졌다」를 말로 적는 대신 실제로 없애는 것이 이 장의 전부다(.t1-dom). */
           '<g class="t1-dom">' + dominoesHtml(DOMINOES) + '</g>' +
 
           /* 사람 — 두 뷰에서 같은 자리, 같은 자세. 흐리게 둬서 주인공이 아님을

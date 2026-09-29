@@ -407,6 +407,69 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
 /* ---------- 07p 일정 칸반 ----------
    4p(연출 흐름)의 막대 도식을 그대로 쓴다. 덱 안에서 같은 모양이 같은 뜻
    (시간 순서)으로 쓰이는 편이 익히기 쉽다. 날짜가 들어가므로 번호 칸만 넓힌다. */
+/* ---------- 08p 일정 달력 ----------
+   못 박힌 날(9/29 · 10/9)은 점 하나로 꽉 채우고, 아직 폭으로만 잡힌 구간은
+   띠로 깐다. 구간을 점으로 찍으면 정해진 날짜처럼 읽힌다.
+   붉은 띠 둘(PC 반입 · 운용 시작)은 서로 묶여 있다는 표시다 — 오른쪽 설명과
+   같은 색을 쓴다. */
+.sc-cal { margin-bottom: 14px; }
+.cal-lay { display: grid; grid-template-columns: 1fr 1fr 1.18fr; gap: 20px; align-items: start; }
+.cal {
+  padding: 14px 16px 16px; border-radius: 12px;
+  background: rgba(255,255,255,.03); border: 1px solid var(--card-line);
+}
+.cal__hd {
+  font-family: var(--font-num); font-size: 14px; font-weight: var(--fw-bold);
+  letter-spacing: .06em; color: #fff; margin-bottom: 10px;
+}
+.cal__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.cal__w {
+  text-align: center; padding-bottom: 5px;
+  font-size: 10.5px; font-weight: var(--fw-bold); letter-spacing: .04em;
+  color: rgba(255,255,255,.38);
+}
+.cal__w--sun { color: rgba(255,120,120,.55); }
+/* 칸을 정사각으로 두면 달력만으로 세로를 다 먹는다 — 높이를 박아 눌러 둔다 */
+.cal__d {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  height: 29px; border-radius: 7px;
+  font-family: var(--font-num); font-size: 12.5px; font-weight: var(--fw-semibold);
+  color: rgba(255,255,255,.72);
+}
+.cal__d.is-out { color: rgba(255,255,255,.2); }
+
+/* 구간 — 가운데 칸은 모서리를 펴서 한 줄로 이어 붙인다 */
+.cal__d.is-mark { color: #fff; border-radius: 0; }
+.cal__d.is-mark.is-head { border-top-left-radius: 7px; border-bottom-left-radius: 7px; }
+.cal__d.is-mark.is-tail { border-top-right-radius: 7px; border-bottom-right-radius: 7px; }
+.cal__d.is-span { background: rgba(255,255,255,.16); }
+.cal__d.is-peak { background: rgba(224,49,49,.3); color: #fff; }
+/* 못 박힌 날 — 꽉 찬 원 하나. 구간과 생김새가 달라야 한다 */
+.cal__d.is-fix {
+  background: #fff; color: #0b0b0b; border-radius: 7px;
+  font-weight: var(--fw-bold);
+}
+
+.cal-key { display: flex; flex-direction: column; gap: 5px; }
+.cal-key__i {
+  display: flex; flex-direction: column; gap: 1px;
+  padding: 5px 10px 6px; border-radius: 8px;
+  background: rgba(255,255,255,.03); border: 1px solid var(--card-line);
+  border-left-width: 3px;
+}
+.cal-key__i.is-fix  { border-left-color: #fff; }
+.cal-key__i.is-span { border-left-color: rgba(255,255,255,.4); }
+.cal-key__i.is-peak { border-left-color: var(--warn-lit); background: rgba(224,49,49,.08); }
+.cal-key__d {
+  font-family: var(--font-num); font-size: 11px; font-weight: var(--fw-bold);
+  letter-spacing: .06em; color: rgba(255,255,255,.5);
+}
+.cal-key__i.is-peak .cal-key__d { color: var(--warn-lit); }
+.cal-key__i b { font-size: 13px; font-weight: var(--fw-bold); color: #fff; line-height: 1.25; }
+.cal-key__i em {
+  font-style: normal; font-size: 10.5px; line-height: 1.35; color: rgba(255,255,255,.48);
+}
+
 .sc-kanban { margin-bottom: 26px; }
 .sc-kanban .fl-s__n {
   font-size: 13px; letter-spacing: 0;

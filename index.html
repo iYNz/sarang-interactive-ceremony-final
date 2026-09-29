@@ -45,7 +45,7 @@
           <h1 class="cover-hero__title" data-rise="2">
             <span class="lead-line">희망2027나눔캠페인 성금 전달식</span>
             나눔이벤트 <span class="hl">연출 시안</span>
-            <span class="sub-line">도미노 · 1안 실물 + LED / 2안 LED 단독 &nbsp;|&nbsp; 2026. 09</span>
+            <span class="sub-line">한 장을 밀면, 마을 전체가 밝아집니다 &nbsp;|&nbsp; 2026. 09</span>
           </h1>
           <div class="cover-brands">
             <img src="assets/logo/airpass.png" alt="airpass" />
@@ -331,6 +331,52 @@
          「PC 가 리허설보다 앞에 있어야 한다」는 이 장의 요지가 위치로 읽힌다.
          4p(연출 흐름)에서 쓰던 막대 도식을 그대로 가져왔다 — 덱 안에서 같은
          모양이 같은 뜻(시간 순서)으로 쓰이는 편이 익히기 쉽다. -->
+    <!-- 08 · 식순 · 큐 관리
+         앞 장들이 도미노 열여섯 컷만 붙들고 있었다. 그것이 전달식 한가운데의
+         한 구간일 뿐이고 앞뒤는 같은 시스템이 이어서 돈다는 것을 여기서 한 번
+         보여 준다 — 그래야 「그럼 나머지 화면은 누가 띄우나」가 안 남는다.
+         식순은 사랑의열매 진행(안)의 여덟 순서를 그대로 따랐고, 멘트는 사회자
+         시나리오에서 줄여 옮겼다. -->
+    <section class="slide slide--doc" id="cue">
+      <div class="slide__inner">
+        <header class="doc-head" data-rise>
+          <div class="doc-eyebrow">
+            <span class="secnum">식순 · 큐 관리</span>
+            <span class="tier tier--base">행사 운영</span>
+          </div>
+          <h2 class="headline--h2">나눔이벤트는 <span class="accent">식 한가운데의 한 구간</span>입니다</h2>
+        </header>
+        <div class="doc-body">
+          <p class="subcopy" data-rise="2">파일을 하나씩 여는 것이 아니라, 운영자가 식순대로 준비된 화면을 <strong>← →</strong> 로 넘깁니다. 아래는 동작 예시입니다 — <strong>콘솔을 클릭</strong>하면 방향키로 조작할 수 있습니다.</p>
+          <div class="cue-console" tabindex="0" data-no-advance data-rise="3" aria-label="큐 콘솔 데모 · 클릭 후 방향키로 조작">
+            <div class="cue-list" role="listbox" aria-label="큐 목록"></div>
+            <div class="cue-stage">
+              <div class="cue-screen">
+                <div class="cue-mock">
+                  <video class="cue-video" muted loop playsinline preload="none"></video>
+                  <img class="cue-still" alt="" />
+                  <img class="cue-frame" src="assets/mockup/mockup10.png" alt="현장 LED 월" />
+                </div>
+                <span class="cue-ment"><b>사회자</b><span class="cue-ment__t"></span></span>
+                <span class="cue-badge">LIVE</span>
+              </div>
+              <div class="cue-bar">
+                <button class="cue-btn" type="button" data-cue-prev data-no-advance aria-label="이전 큐">‹</button>
+                <div class="cue-meta">
+                  <span class="cue-no">CUE 01</span>
+                  <span class="cue-title">내빈입장</span>
+                  <span class="cue-next">NEXT · 내빈소개</span>
+                </div>
+                <button class="cue-btn" type="button" data-cue-next data-no-advance aria-label="다음 큐">›</button>
+              </div>
+              <div class="cue-hint"><b>← →</b> 큐 이동 &nbsp;·&nbsp; <b>목록 클릭</b> 콘솔 활성화</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="foot-note">※ 식순 · 멘트는 사랑의열매 <b>「2026 성금 전달식 진행(안)」</b>과 <b>「기업 성금 전달식 사회자 시나리오」</b>를 따랐습니다. 데모 UI 이며, 실제 구축 시 페이드 · 디졸브 전환, 블랙아웃, 비상 복귀, 사전 프리뷰를 포함합니다.</div>
+    </section>
+
     <section class="slide slide--doc" id="scope">
       <div class="slide__inner">
         <header class="doc-head" data-rise>
@@ -342,13 +388,11 @@
         </header>
         <div class="doc-body">
 
-          <div class="fl-steps sc-kanban" data-rise="3">
-            <div class="fl-s"><span class="fl-s__n">9 / 29</span><b>본 시안 제출</b><em>계약 근거자료</em></div>
-            <div class="fl-s"><span class="fl-s__n">10 / 9</span><b>계약</b><em>이후 구축 착수</em></div>
-            <div class="fl-s fl-s--peak"><span class="fl-s__n">10월 중</span><b>미디어 서버 PC 반입</b><em>설치가 선행되어야 콘텐츠가 돕니다</em></div>
-            <div class="fl-s"><span class="fl-s__n">11월 초</span><b>현장 시뮬레이션 · 리허설</b><em>인식 확정 · 초 단위 배분 확정</em></div>
-            <div class="fl-s fl-s--peak"><span class="fl-s__n">11월 2주</span><b>운용 시작</b><em>여러 기업 연속 진행</em></div>
-          </div>
+          <!-- 「10월 중」 「11월 2주」를 글로만 적으면 그게 언제인지 각자 달력을
+               펴 봐야 하고, 그러면 PC 반입과 리허설 사이가 몇 주인지가 안 잡힌다.
+               실제 달력에 칠하면 그 간격이 바로 보인다 — 이 장에서 확인받을 것이
+               「이 순서가 가능한가」이므로 간격이 보이는 쪽이 맞다. -->
+          <div class="sc-cal" id="scCal" data-rise="3"></div>
 
           <div class="sc-lay" data-rise="4">
 
@@ -435,5 +479,7 @@
   <script src="js/logo-swap.js"></script>
   <script src="js/tech.js"></script>
   <script src="js/tech2.js"></script>
+  <script src="js/cue.js"></script>
+  <script src="js/schedule.js"></script>
 </body>
 </html>

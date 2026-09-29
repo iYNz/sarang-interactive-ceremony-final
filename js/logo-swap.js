@@ -25,9 +25,7 @@
     { k: '신한금융그룹', file: 'shinhan' }
   ];
 
-  /* 인트로는 아직 그림이 없다. 네 장 모두 CUT 01 을 걸어 두고 자리만 잡아 둔다.
-     실제 판이 나오면 아래 한 줄을 아웃로와 같은 모양으로 바꾸면 된다. */
-  function introSrc()        { return 'assets/led/cut01.jpg'; }
+  function introSrc(sponsor) { return 'assets/sponsor/intro-' + sponsor.file + '.jpg'; }
   function outroSrc(sponsor) { return 'assets/sponsor/' + sponsor.file + '.jpg'; }
 
   /* 가운데는 03p 의 컷 02~15 를 순서대로 전부 건다 */

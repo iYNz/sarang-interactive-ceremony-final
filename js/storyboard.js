@@ -539,31 +539,9 @@
   });
   dotsWrap.innerHTML = dotsHtml;
 
-  /* 동선 가이드 토글 — LED 화면을 가릴 일이 있을 때 손으로 걷어내는 버튼이다.
-     CUT 01 은 가이드가 단계에 묶여 있고 나머지는 처음부터 켜져 있으므로, 버튼은
-     그 두 경우를 구분하지 않고 「지금 보이면 끄고, 안 보이면 켠다」만 한다.
-     다시 켤 때는 새로 만들어 넣어 걸음을 처음부터 보여준다. */
-  var peopleBtn = document.getElementById('sbPeopleBtn');
-  function syncBtn() {
-    if (!peopleBtn) return;
-    var on = guideOn(idx);
-    peopleBtn.classList.toggle('is-on', on);
-    peopleBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
-  }
-  if (peopleBtn) {
-    peopleBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      if (guideOn(idx)) {
-        goff[idx] = true;
-        applyStep(idx, ssel[idx]);
-      } else {
-        goff[idx] = false;
-        /* 단계 때문에 꺼져 있었다면(CUT 01 의 0단계) 켜지는 단계까지 올린다 */
-        applyStep(idx, Math.max(ssel[idx], guideAt(idx)), true);
-      }
-      syncBtn();
-    });
-  }
+  /* 「사람 위치」 토글이 도트 오른쪽에 붙어 있었다. 사람이 그려지는 컷이 01 과
+     17 둘뿐이라 나머지 열다섯 장에서는 눌러도 바뀌는 것이 없었다. 걷는다.
+     goff[] 는 남겨 둔다 — 가이드를 끄는 경로가 없어졌을 뿐 구조는 그대로다. */
 
   /* 라이트박스는 걸지 않는다 — 발표 중 목업을 잘못 눌러 확대가 열리면 흐름이 끊긴다.
      같은 화면들은 04p CMS 목업의 미리보기에서 크게 볼 수 있으므로 잃는 것이 없다. */
@@ -577,7 +555,6 @@
     cards.forEach(function (el, i) { el.classList.toggle('is-active', i === idx); });
     dots.forEach(function (el, i) { el.classList.toggle('is-on', i === idx); });
     if (curEl) curEl.textContent = String(idx + 1).padStart(2, '0');
-    syncBtn();
     syncDot();
   }
 
@@ -630,7 +607,7 @@
     if (setGuide[i]) setGuide[i](guideOn(i), !!rebuild || (was < g && sN >= g));
     /* 카드 안에서 단계만 밟을 때는 render() 를 거치지 않으므로 여기서 버튼을 맞춘다 —
        CUT 01 의 0단계로 되돌아왔는데 버튼만 켜진 채로 남던 것을 막는다. */
-    if (i === idx) { syncBtn(); syncDot(); }
+    if (i === idx) syncDot();
   }
 
   /* ---- 이동 ---- */

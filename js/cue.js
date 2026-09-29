@@ -55,7 +55,7 @@
       { n: '06-2', title: '민다 · 판정', sig: 'DOMINO DOWN 트리거', screen: 'CUT 02 — 화면 속 첫 장이 넘어간다',
         img: 'assets/led/cut02.jpg', key: true, ppl: 'pushed',
         ment: '여러분, 힘차게 카운트다운 외치겠습니다.\n셋, 둘, 하나!' },
-      { n: '06-3', title: '도시로 퍼진다', sig: '판정 없음 · 자체 연출', screen: 'CUT 03 ~ 08 — 길을 따라 번진다',
+      { n: '06-3', title: '마을로 퍼진다', sig: '판정 없음 · 자체 연출', screen: 'CUT 03 ~ 08 — 길을 따라 번진다',
         img: 'assets/led/cut06.jpg', ppl: 'side',
         ment: '○○기업의 나눔으로 우리사회 곳곳에 희망의 빛이 퍼지고 있습니다.' },
       { n: '06-4', title: '등대가 켜진다', sig: '판정 없음 · 자체 연출', screen: 'CUT 09 ~ 15 — 빛이 마을을 덮는다',

@@ -32,10 +32,31 @@
   var Z = { x1: D.x1 - PAD, x2: D.x2 + PAD, y1: D.y1 - PAD, y2: D.y2 + 6 };
   var DCX = (D.x1 + D.x2) / 2;
 
-  /* 게이지 — 도미노 밑변에서 윗변까지 수직으로 차오른다. 도미노보다 살짝
-     좁게 잡아 나무 판이 뒤에 비치게 둔다. 채워지는 데 1초, 그 뒤 잠깐 머물다
-     사라지고 다시 시작한다(CSS .t2-fill). */
-  var GW = (D.x2 - D.x1) * 0.52;
+  /* 게이지 — 도미노 밑변에서 윗변까지 수직으로 차오른다. 채워지는 데 1초,
+     그 뒤 잠깐 머물다 사라지고 다시 시작한다(CSS .t2-fill).
+     가는 직선이다. 도미노 폭의 17% — 한때 52% 짜리 둥근 막대였는데, 그 두께면
+     나무 판을 덮어 「도미노에 칠해진 것」으로 보이고 모서리가 둥글어 알약처럼
+     읽혔다. 얇은 직선이라야 **차오르는 눈금**으로 읽힌다. */
+  var GW = (D.x2 - D.x1) * 0.173;
+
+  /* 손 — 손목을 원점에 두고 손가락이 +x 로 뻗은 모양을 만들어 놓고, 자리에서
+     뒤집어 쓴다(flip -1 이면 왼쪽을 향한다).
+     동그라미로는 「무엇이 닿았다」까지만 읽히고 사람 손인지는 안 읽힌다. 이 장은
+     **손이 들어왔는지**를 보는 이야기라 손인 것이 보여야 한다.
+     손가락은 선 네 개 + 엄지 하나다. 이 크기(가로 32)에서는 마디를 그려 봐야
+     뭉치므로, 길이만 조금씩 달리해 손 모양의 윤곽만 남긴다. */
+  function handSvg(x, y, flip, sc) {
+    var f = 'stroke="#f5f5f7" stroke-width="5" stroke-linecap="round" fill="none"';
+    return '<g transform="translate(' + x + ',' + y + ') scale(' + (flip * (sc || 1)) + ',' + (sc || 1) + ')">' +
+      '<rect x="-14" y="-11" width="20" height="22" rx="7"' +
+        ' fill="#0a0a0c" fill-opacity=".78" stroke="#f5f5f7" stroke-width="4.5"/>' +
+      '<path d="M5 -7h11" ' + f + '/>' +
+      '<path d="M5 -2h13" ' + f + '/>' +
+      '<path d="M5 3h12" ' + f + '/>' +
+      '<path d="M5 8h9" ' + f + '/>' +
+      '<path d="M-7 -10l6 -9" ' + f + '/>' +
+    '</g>';
+  }
 
   function diagram() {
     return '' +
@@ -77,24 +98,23 @@
 
           /* 1초 게이지 — 밑변에 붙여 두고 세로로만 늘린다 */
           '<rect class="t2-fill" x="' + (DCX - GW / 2) + '" y="' + D.y1 + '"' +
-            ' width="' + GW + '" height="' + (D.y2 - D.y1) + '" rx="' + (GW / 2) + '"' +
+            ' width="' + GW + '" height="' + (D.y2 - D.y1) + '"' +
             ' fill="url(#t2Glow)"/>' +
           /* 다 찼을 때 밝아지는 윗선 — 「여기까지 차면 넘어간다」 */
-          '<path class="t2-top" d="M' + (DCX - GW * 0.9) + ' ' + D.y1 + 'h' + (GW * 1.8) + '"' +
-            ' stroke="#ffd166" stroke-width="5" stroke-linecap="round"/>' +
-          /* 손 — 두 분이 같은 자리로 손을 뻗는다. 팔은 몸통 안쪽 모서리 가슴께에서
-             시작한다(반폭 47, 그래서 930 과 1006).
-             손높이를 좌우로 조금 어긋내 둔다. 같은 높이에 동그라미 두 개를 나란히
-             놓으면 얼굴처럼 읽힌다. */
+          '<path class="t2-top" d="M' + (DCX - GW * 2.4) + ' ' + D.y1 + 'h' + (GW * 4.8) + '"' +
+            ' stroke="#ffd166" stroke-width="4"/>' +
+          /* 손 — 두 분이 같은 자리로 손을 뻗는다. 손높이를 좌우로 어긋내 둔다.
+             같은 높이에 나란히 놓으면 얼굴처럼 읽힌다.
+
+             팔은 **짧은 토막**이다. 판정 자리가 두 몸통 사이 좁은 틈(930~1006)에
+             있어 어깨부터 길게 그리면 거의 수직선이 되고 죽마처럼 읽힌다.
+             몸통 안쪽에서 시작해 손목까지만 잇는다 — 사람에게서 나온 손이라는
+             것만 보이면 되고, 팔 자체는 이 도식의 내용이 아니다. */
           '<g class="t2-hand">' +
-            '<path d="M930 706L' + (DCX - 20) + ' ' + (D.y2 - 62) + '"' +
-              ' stroke="#f5f5f7" stroke-width="7" stroke-linecap="round"/>' +
-            '<path d="M1006 712L' + (DCX + 20) + ' ' + (D.y2 - 40) + '"' +
-              ' stroke="#f5f5f7" stroke-width="7" stroke-linecap="round"/>' +
-            '<rect x="' + (DCX - 31) + '" y="' + (D.y2 - 72) + '" width="24" height="18" rx="8"' +
-              ' fill="#0a0a0c" fill-opacity=".72" stroke="#f5f5f7" stroke-width="4"/>' +
-            '<rect x="' + (DCX + 7) + '" y="' + (D.y2 - 50) + '" width="24" height="18" rx="8"' +
-              ' fill="#0a0a0c" fill-opacity=".72" stroke="#f5f5f7" stroke-width="4"/>' +
+            '<path d="M900 ' + (D.y2 - 68) + 'H926" stroke="#f5f5f7" stroke-width="7" stroke-linecap="round"/>' +
+            '<path d="M1032 ' + (D.y2 - 38) + 'H1006" stroke="#f5f5f7" stroke-width="7" stroke-linecap="round"/>' +
+            handSvg(940, D.y2 - 68, 1, 1.15) +
+            handSvg(992, D.y2 - 38, -1, 1.15) +
           '</g>' +
 
           /* 라벨 — 영역 왼쪽. 아래는 설명 패널이 덮고 위는 화면이라 옆이 유일하게

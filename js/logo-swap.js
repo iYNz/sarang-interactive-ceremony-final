@@ -28,8 +28,8 @@
   function introSrc(sponsor) { return 'assets/sponsor/intro-' + sponsor.file + '.jpg'; }
   function outroSrc(sponsor) { return 'assets/sponsor/' + sponsor.file + '.jpg'; }
 
-  /* 가운데는 03p 의 컷 02~15 를 순서대로 전부 건다 */
-  var MID = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(function (n) {
+  /* 가운데는 03p 의 컷 02~16 을 순서대로 전부 건다 */
+  var MID = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map(function (n) {
     var s = n < 10 ? '0' + n : String(n);
     return { k: s, src: 'assets/led/cut' + s + '.jpg' };
   });

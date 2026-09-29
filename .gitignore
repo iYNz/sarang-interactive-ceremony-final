@@ -2,3 +2,7 @@
 Thumbs.db
 .DS_Store
 desktop.ini
+
+# 트리거 원본 — 2.65GB 라 저장소에 올리지 않는다. 디스크에는 그대로 둔다.
+# (netlify.toml 이 assets/for-img/* 를 404 로 막고 있고, 배포에도 필요 없다)
+assets/for-img/ref/

@@ -324,7 +324,14 @@
   border: 0; padding: 0;
 }
 .sb-dot.is-on { width: 28px; }
-.sb-dot.is-on::after { content: ""; position: absolute; inset: 0; border-radius: 999px; background: #fff; }
+/* 활성 도트는 단계만큼 찬다(--p). 두 단계짜리 컷에서는 절반이 찬 채로 멈췄다가
+   한 번 더 누르면 마저 찬다 — 컷 안에 한 장이 더 있다는 유일한 표시다. */
+.sb-dot.is-on::after {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0;
+  width: calc(100% * var(--p, 1));
+  border-radius: 999px; background: #fff;
+  transition: width .25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
 
 /* ---------- 마지막 카드 ---------- */
 .sb-card--outro .sb-card__inner {

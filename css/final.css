@@ -428,8 +428,8 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
 .cal__w .is-sun { color: rgba(255,120,120,.6); }
 
 /* 한 주 — 칸 일곱 개 위에 일정 띠를 얹는다 */
-/* 한 주 — 날짜 줄 + 일정 띠 세 줄(30 + 3×20) 이 들어갈 높이 */
-.cal__wk { position: relative; display: grid; grid-template-columns: repeat(7, 1fr); height: 104px; }
+/* 한 주 — 날짜 줄 + 일정 띠 두 줄(32 + 24 + 19 = 75) 이 들어갈 높이 */
+.cal__wk { position: relative; display: grid; grid-template-columns: repeat(7, 1fr); height: 96px; }
 .cal__d {
   display: flex; align-items: flex-start; justify-content: center; padding-top: 6px;
   font-family: var(--font-num); font-size: 15px; font-weight: var(--fw-semibold);
@@ -438,8 +438,8 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
 .cal__d.is-out { color: rgba(255,255,255,.18); }
 .cal__d.is-on { color: #fff; font-weight: var(--fw-bold); }
 
-/* 주마다 띠가 셋까지 쌓인다(못 박힌 날 · 영상 · 시스템). 주 높이 104px 안에
-   32 + 2×22 + 19 = 95 로 들어간다 — 남는 9px 이 다음 주 날짜와의 간격이다. */
+/* 주마다 띠가 둘까지 쌓인다(못 박힌 날 · 제작). 주 높이 96px 안에
+   32 + 24 + 19 = 75 로 들어간다 — 남는 21px 이 다음 주 날짜와의 간격이다. */
 .cal__bar {
   position: absolute; height: 19px; border-radius: 5px;
   display: flex; align-items: center; padding: 0 7px; overflow: hidden;

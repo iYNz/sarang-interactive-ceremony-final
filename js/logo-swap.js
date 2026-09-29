@@ -1,45 +1,54 @@
 /* logo-swap.js — 04p 로고 · 재사용
 
    「로고는 맨 처음과 마지막에만 나옵니다」를 말이 아니라 **훑어서** 보여 준다.
-   아래에 컷을 작게 쭉 깔아 두면, 앞뒤 두 장에만 로고가 있고 가운데는 전부
-   비어 있다는 것이 한눈에 잡힌다. 가운데를 눌러 봐도 로고는 나오지 않는다 —
-   그 「안 나온다」가 이 장이 파는 값어치다.
+   아래에 열여섯 장을 전부 깔아 두면, 앞뒤 두 장에만 로고가 있고 가운데 열네
+   장이 통째로 비어 있다는 것이 한눈에 잡힌다. 몇 장만 골라 놓으면 「고른 것만
+   비어 있는 것 아니냐」가 남으므로 전부 깐다. 덤으로 이 장에서 흐름도 한 번
+   더 훑어진다.
 
    그래서 후원사 버튼은 **처음과 끝에서만** 살아 있다. 가운데 컷에서 눌러
    바뀌는 것이 있으면 「로고 없음」이 거짓말이 된다.
 
    고른 후원사는 프레임을 옮겨도 유지된다. 처음에서 A 를 고르고 끝으로 가면
-   같은 A 가 떠 있어야 「한 번 올리면 앞뒤가 같이 바뀐다」가 읽힌다. */
+   같은 A 가 떠 있어야 「한 번 올리면 앞뒤가 같이 바뀐다」가 읽힌다.
+
+   다음 장으로 넘어가기 전에 **인트로와 아웃로를 한 번씩은 보게** 한다(window.LOGO).
+   이 장의 값어치가 그 두 장에 있는데, 발표 중에 화살표만 눌러 지나가면
+   가운데 컷들만 보고 넘어가게 된다. */
 (function () {
   'use strict';
 
   var SPONSORS = [
-    { k: 'KB국민은행',   file: 'kb',      note: '가로로 매우 긴 국문 lockup' },
-    { k: 'HYUNDAI',      file: 'hyundai', note: '영문 워드마크 — 심볼이 앞에 붙는다' },
-    { k: '우리은행',     file: 'woori',   note: '짧은 국문 — 가로로 가장 좁다' },
-    { k: '신한금융그룹', file: 'shinhan', note: '심볼 + 다섯 글자' }
+    { k: 'KB국민은행',   file: 'kb' },
+    { k: 'HYUNDAI',      file: 'hyundai' },
+    { k: '우리은행',     file: 'woori' },
+    { k: '신한금융그룹', file: 'shinhan' }
   ];
 
-  /* 인트로는 아직 그림이 없다. 네 장 모두 CUT 01 을 걸어 두고, 자리만 잡아 둔다.
+  /* 인트로는 아직 그림이 없다. 네 장 모두 CUT 01 을 걸어 두고 자리만 잡아 둔다.
      실제 판이 나오면 아래 한 줄을 아웃로와 같은 모양으로 바꾸면 된다. */
-  function introSrc()          { return 'assets/led/cut01.jpg'; }
-  function outroSrc(sponsor)   { return 'assets/sponsor/' + sponsor.file + '.jpg'; }
+  function introSrc()        { return 'assets/led/cut01.jpg'; }
+  function outroSrc(sponsor) { return 'assets/sponsor/' + sponsor.file + '.jpg'; }
 
-  var FRAMES = [
-    { k: '인트로', tag: '로고', pick: introSrc },
-    { k: 'CUT 03', src: 'assets/led/cut03.jpg' },
-    { k: 'CUT 06', src: 'assets/led/cut06.jpg' },
-    { k: 'CUT 09', src: 'assets/led/cut09.jpg' },
-    { k: 'CUT 12', src: 'assets/led/cut12.jpg' },
-    { k: '아웃로', tag: '로고', pick: outroSrc }
-  ];
+  /* 가운데는 03p 의 컷을 순서대로 전부 건다.
+     14 는 13 과 같은 파일을 쓰므로 한 번만 넣는다 — 같은 그림이 두 번 깔리면
+     「흐름」이 아니라 목록의 실수로 보인다. */
+  var MID = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15].map(function (n) {
+    var s = n < 10 ? '0' + n : String(n);
+    return { k: s, src: 'assets/led/cut' + s + '.jpg' };
+  });
 
-  var shot   = document.getElementById('lgShot');
-  var strip  = document.getElementById('lgStrip');
-  var picks  = document.getElementById('lgPicks');
+  var FRAMES = [{ k: '인트로', tag: '로고', pick: introSrc }]
+    .concat(MID)
+    .concat([{ k: '아웃로', tag: '로고', pick: outroSrc }]);
+  var LAST = FRAMES.length - 1;
+
+  var shot  = document.getElementById('lgShot');
+  var strip = document.getElementById('lgStrip');
+  var picks = document.getElementById('lgPicks');
   if (!shot || !strip || !picks) return;
 
-  var frame = 0, sponsor = 0;
+  var frame = 0, sponsor = 0, seenIntro = false, seenOutro = false;
 
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
   function srcOf(f) { return f.pick ? f.pick(SPONSORS[sponsor]) : f.src; }
@@ -53,17 +62,17 @@
            '</button>';
   }).join('');
 
+  /* 버튼 줄에 설명을 붙였었다. 고를 때마다 길이가 달라져 가운데 정렬이 흔들렸고,
+     어차피 아래 각주가 같은 말을 하고 있었다. 버튼만 남긴다. */
   picks.innerHTML =
     '<span class="lg-picks__k">후원사 로고 · CMS 등록</span>' +
     SPONSORS.map(function (p, i) {
       return '<button class="lg-pick' + (i === 0 ? ' is-on' : '') + '" type="button"' +
              ' data-no-advance data-i="' + i + '">' + esc(p.k) + '</button>';
-    }).join('') +
-    '<span class="lg-picks__n" id="lgNote"></span>';
+    }).join('');
 
   var ths     = strip.querySelectorAll('.lg-th');
   var pickBtn = picks.querySelectorAll('.lg-pick');
-  var noteEl  = document.getElementById('lgNote');
 
   /* 미리 받아 둔다 — 처음 누를 때 한 프레임 비는 것을 없앤다 */
   FRAMES.forEach(function (f) {
@@ -85,10 +94,20 @@
     im.src = next;
   }
 
+  function show(n) {
+    frame = n;
+    if (n === 0) seenIntro = true;
+    if (n === LAST) seenOutro = true;
+    render();
+  }
+
   function render() {
-    var f = FRAMES[frame], on = !!f.pick;
+    var on = !!FRAMES[frame].pick;
     paint();
-    Array.prototype.forEach.call(ths, function (t, i) { t.classList.toggle('is-on', i === frame); });
+    Array.prototype.forEach.call(ths, function (t, i) {
+      t.classList.toggle('is-on', i === frame);
+      if (i === frame) t.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    });
     /* 가운데 컷에서는 후원사 버튼을 잠근다 — 여기서 바뀌는 것이 있으면
        「로고 없음」이 거짓말이 된다 */
     picks.classList.toggle('is-off', !on);
@@ -96,7 +115,6 @@
       b.disabled = !on;
       b.classList.toggle('is-on', on && i === sponsor);
     });
-    noteEl.textContent = on ? SPONSORS[sponsor].note : '이 구간에는 로고가 나오지 않습니다';
   }
 
   function setSponsor(n) {
@@ -112,8 +130,7 @@
   Array.prototype.forEach.call(ths, function (t) {
     t.addEventListener('click', function (e) {
       e.stopPropagation();
-      frame = parseInt(t.getAttribute('data-i'), 10);
-      render();
+      show(parseInt(t.getAttribute('data-i'), 10));
     });
   });
   Array.prototype.forEach.call(pickBtn, function (b) {
@@ -124,5 +141,17 @@
     });
   });
 
-  render();
+  /* 슬라이드 이동을 붙잡는다 — 앞뒤 두 장을 다 보고 나서야 다음 장으로.
+     뒤로 가는 것은 막지 않는다. 되돌아가는 길까지 잠그면 발표 중에 답답하다. */
+  window.LOGO = {
+    next: function () {
+      if (!seenOutro) { show(LAST); return true; }
+      if (!seenIntro) { show(0); return true; }
+      return false;
+    },
+    prev: function () { return false; },
+    reset: function (fromEnd) { show(fromEnd ? LAST : 0); }
+  };
+
+  show(0);
 })();

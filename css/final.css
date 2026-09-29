@@ -220,10 +220,12 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
 }
 .lg-shot.is-swap { opacity: 0; }
 
-.lg-strip { display: flex; justify-content: center; gap: 7px; flex: 0 0 auto; }
+/* 열여섯 장을 한 줄에 깐다 — 몇 장만 골라 놓으면 「고른 것만 비어 있는 것
+   아니냐」가 남는다. 폭은 그 줄이 한 화면에 들어가는 값이다(16×62 + 15×5). */
+.lg-strip { display: flex; justify-content: center; gap: 5px; flex: 0 0 auto; }
 .lg-th {
-  position: relative; width: 84px; aspect-ratio: 16 / 9;
-  border-radius: 7px; overflow: hidden; padding: 0;
+  position: relative; width: 62px; aspect-ratio: 16 / 9;
+  border-radius: 6px; overflow: hidden; padding: 0; flex: 0 0 auto;
   border: 1.5px solid rgba(255,255,255,.14); background: #05050a;
   opacity: .5; transition: opacity .25s var(--ease), border-color .25s var(--ease);
 }
@@ -232,13 +234,14 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
 .lg-th.is-on { opacity: 1; border-color: var(--hl); }
 /* 이름은 썸네일 위에 얹는다 — 줄 아래로 빼면 줄 높이가 두 배가 된다 */
 .lg-th__k {
-  position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 2px 3px;
-  font-size: 9.5px; font-weight: var(--fw-bold); letter-spacing: .02em; color: #fff;
-  background: linear-gradient(180deg, transparent, rgba(0,0,0,.78));
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 7px 2px 2px;
+  font-size: 8.5px; font-weight: var(--fw-bold); letter-spacing: 0; color: #fff;
+  white-space: nowrap; overflow: hidden;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,.8));
 }
 .lg-th__tag {
-  position: absolute; top: 3px; right: 3px; padding: 1px 5px; border-radius: 4px;
-  font-size: 8.5px; font-weight: var(--fw-bold); letter-spacing: .04em;
+  position: absolute; top: 2px; right: 2px; padding: 0 4px; border-radius: 3px;
+  font-size: 7.5px; font-weight: var(--fw-bold); letter-spacing: 0;
   color: #0b0b0b; background: var(--hl);
 }
 /* 로고가 있는 두 장만 테두리를 살려 둔다 — 꺼져 있을 때도 어디가 앞뒤인지 보인다 */
@@ -261,7 +264,6 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
 }
 .lg-pick:hover { color: #fff; border-color: rgba(255,255,255,.3); }
 .lg-pick.is-on { color: #0b0b0b; background: var(--hl); border-color: var(--hl); }
-.lg-picks__n { font-size: 12.5px; color: rgba(255,255,255,.42); }
 
 /* ================= 08p · 톤 · 사운드 ================= */
 .tn-lay { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }

@@ -6,7 +6,7 @@
    보여 준다. 그래야 「그럼 나머지 화면은 누가 띄우나」가 안 남는다.
 
    식순은 사랑의열매 진행(안)의 여덟 순서를 그대로 따른다.
-     01 내빈입장 · 착석 / 02 내빈소개 / 03 감사영상 상영 / 04 인사말씀(기부자)
+     01 내빈입장 · 착석 / 02 내빈소개 / 03 캠페인 영상 상영 / 04 인사말씀(기부자)
      05 감사말씀(모금회) / 06 나눔이벤트 / 07 성금 전달 / 08 기념촬영 및 폐회
    멘트는 사회자 시나리오에서 줄여 옮겼다.
 
@@ -22,7 +22,6 @@
   var TITLE = 'assets/cue/intro-screen.jpg';
   /* 03 만 다른 화면이다 — 기업이 준 캠페인 영상이 그대로 도는 구간이라
      타이틀 화면이 아니다. */
-  var CAMPAIGN = 'assets/cue/screening.jpg';
 
   /* 두 분이 무대 어디에 서 있는지 — 03p CUT 01 과 같은 도형 · 같은 좌표다.
      `side` 는 나눔이벤트 한가운데의 자리다. 밀고 난 뒤에도 가운데 서 있으면
@@ -39,8 +38,10 @@
         ment: '내빈분들께서 입장하고 계십니다. 큰 박수로 환영해 주시기 바랍니다.\n지금부터 희망2027나눔캠페인 ○○기업 성금 전달식을 시작하겠습니다.' },
       { n: '02', title: '내빈소개', sig: '화면 유지', screen: '타이틀 화면 유지', img: TITLE,
         ment: '먼저, 오늘 자리를 빛내주신 내빈 소개가 있겠습니다.' },
-      { n: '03', title: '감사영상 상영', sig: '영상 ON · 조명 OFF', screen: '기업 소개 영상 (기업 제공)', img: CAMPAIGN,
-        ment: '2025년 한 해 ○○기업을 통해 만들어진 변화들을 영상으로 담아보았습니다. 함께 보시겠습니다.' },
+      /* 이 큐의 화면은 **기업이 주는 영상**이다. 그럴듯한 정지컷을 깔아 두면
+         우리가 만드는 화면처럼 보이므로 그림 없이 글자만 띄운다. */
+      { n: '03', title: '캠페인 영상 상영', sig: '영상 ON · 조명 OFF', screen: '기업 캠페인 영상 (기업 제공)', note: '캠페인 영상 재생',
+        ment: '2026년 한 해 ○○기업을 통해 만들어진 변화들을 영상으로 담아보았습니다. 함께 보시겠습니다.' },
       { n: '04', title: '인사말씀 (기부자)', sig: '인사말씀 BGM ON', screen: '타이틀 화면 유지', img: TITLE,
         ment: '○○기업 ***님을 앞쪽 단상으로 모시고 인사말씀을 청해 듣도록 하겠습니다.' },
       { n: '05', title: '감사말씀 (모금회)', sig: '감사말씀 BGM ON', screen: '타이틀 화면 유지', img: TITLE,
@@ -110,6 +111,7 @@
   var listEl  = root.querySelector('.cue-list');
   var vidEl   = root.querySelector('.cue-video');
   var stillEl = root.querySelector('.cue-still');
+  var noteEl  = root.querySelector('.cue-pending');
   var mockEl  = root.querySelector('.cue-mock');
   var mentEl  = root.querySelector('.cue-ment__t');
   var noEl    = root.querySelector('.cue-no');
@@ -138,6 +140,10 @@
     var c = CUES[idx];
     items.forEach(function (el, i) { el.classList.toggle('is-on', i === idx); });
 
+    if (noteEl) {
+      noteEl.style.display = c.note ? '' : 'none';
+      if (c.note) noteEl.textContent = c.note;
+    }
     if (c.vid) {
       stillEl.style.display = 'none';
       vidEl.style.display = '';
@@ -147,8 +153,10 @@
       vidEl.pause();
       vidEl.removeAttribute('src');
       vidEl.style.display = 'none';
-      stillEl.style.display = '';
-      stillEl.src = c.img;
+      /* note 가 있는 큐는 그림 자리를 비운다 — src 를 남겨 두면 앞 큐의 화면이
+         글자 뒤에 그대로 걸려 있다 */
+      stillEl.style.display = c.note ? 'none' : '';
+      if (c.img) stillEl.src = c.img; else stillEl.removeAttribute('src');
     }
 
     /* 사람 · 도미노 레이어는 큐마다 다시 그린다 */

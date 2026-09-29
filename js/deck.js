@@ -24,7 +24,8 @@
     storyboard: '컷 스토리보드',
     logo: '로고 · 재사용',
     choose: '고르실 것',
-    tech: '기술 · 운영',
+    tech: '기술 · 운영 — 1안',
+    tech2: '기술 · 운영 — 2안',
     scope: '범위 · 일정',
     'logo-end': '마무리',
   };

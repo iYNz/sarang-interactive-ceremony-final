@@ -30,10 +30,8 @@
   function introSrc()        { return 'assets/led/cut01.jpg'; }
   function outroSrc(sponsor) { return 'assets/sponsor/' + sponsor.file + '.jpg'; }
 
-  /* 가운데는 03p 의 컷을 순서대로 전부 건다.
-     14 는 13 과 같은 파일을 쓰므로 한 번만 넣는다 — 같은 그림이 두 번 깔리면
-     「흐름」이 아니라 목록의 실수로 보인다. */
-  var MID = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15].map(function (n) {
+  /* 가운데는 03p 의 컷 02~15 를 순서대로 전부 건다 */
+  var MID = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(function (n) {
     var s = n < 10 ? '0' + n : String(n);
     return { k: s, src: 'assets/led/cut' + s + '.jpg' };
   });
@@ -80,18 +78,14 @@
     SPONSORS.forEach(function (p) { new Image().src = f.pick(p); });
   });
 
-  /* src 를 바로 갈아끼우면 한 프레임 비어 깜빡인다 — 페이드로 받는다 */
+  /* 그냥 갈아 끼운다. 한때 페이드로 받았다 — src 를 바로 바꾸면 한 프레임 비어
+     깜빡일까 봐였는데, 위에서 전부 미리 받아 두므로 그럴 일이 없다. 페이드가
+     남아 있으면 컷을 훑을 때마다 검게 꺼졌다 켜져서 흐름이 뚝뚝 끊긴다. */
   function paint() {
     var f = FRAMES[frame], next = srcOf(f);
     if (shot.getAttribute('src') === next) return;
-    shot.classList.add('is-swap');
-    var im = new Image();
-    im.onload = function () {
-      shot.src = next;
-      shot.alt = f.k + (f.pick ? ' — ' + SPONSORS[sponsor].k : '');
-      requestAnimationFrame(function () { shot.classList.remove('is-swap'); });
-    };
-    im.src = next;
+    shot.src = next;
+    shot.alt = f.k + (f.pick ? ' — ' + SPONSORS[sponsor].k : '');
   }
 
   function show(n) {

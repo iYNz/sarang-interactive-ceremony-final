@@ -216,9 +216,8 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
 .lg-shot {
   position: absolute; inset: 0; display: block;
   width: 100%; height: 100%; object-fit: cover;
-  opacity: 1; transition: opacity .28s var(--ease);
+  opacity: 1;
 }
-.lg-shot.is-swap { opacity: 0; }
 
 /* 열여섯 장을 한 줄에 깐다 — 몇 장만 골라 놓으면 「고른 것만 비어 있는 것
    아니냐」가 남는다. 폭은 그 줄이 한 화면에 들어가는 값이다(16×62 + 15×5). */

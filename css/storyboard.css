@@ -409,26 +409,9 @@
 }
 .tech-cut b { color: #fff; font-weight: var(--fw-bold); letter-spacing: .06em; }
 
-/* 센서 선택 — 도트가 아니라 이름이 그대로 보이는 태그 버튼.
-   2p 의 센서 배지와 같은 자리(우측 상단)에 둔다. */
-.tech-tabs {
-  position: absolute; right: 26px; top: 24px; z-index: 3;
-  display: inline-flex; align-items: center; gap: 4px; padding: 5px;
-  border-radius: 999px;
-  background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.2);
-  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-}
-.tech-tab {
-  border: 0; padding: 9px 20px; border-radius: 999px; cursor: pointer;
-  background: transparent; color: rgba(255,255,255,.6);
-  font: inherit; font-size: 15px; font-weight: var(--fw-bold); letter-spacing: .08em;
-  transition: background .3s var(--ease), color .3s var(--ease);
-}
-.tech-tab:hover { color: #fff; }
-.tech-tab.is-on { background: #fff; color: #1d1d1f; }
-
 /* 센서 설명 — 2p 사회자 멘트 HUD와 같은 유리판을 목업 안쪽 하단에 둔다.
-   두 장을 아래 모서리 기준으로 겹쳐 두어, 길이가 달라도 바닥선은 흔들리지 않는다.
+   한때 06p 에서 두 장을 겹쳐 두고 탭으로 갈아 끼웠다. 06p · 07p 모두 루프
+   애니메이션 한 장으로 바뀌어 지금은 각 장에 한 장씩만 있다.
    목업 하단은 바닥이라 LED 창(세로 26~64%)을 가리지 않는다. */
 .tech-note {
   position: absolute; left: 30px; right: 30px; bottom: 28px; z-index: 4;
@@ -940,4 +923,33 @@
 /* 화면이 움직이는 것을 싫어하는 환경에서는 다 찬 상태로 세워 둔다 */
 @media (prefers-reduced-motion: reduce) {
   .t2-fill, .t2-top, .t2-hand { animation: none; opacity: 1; transform: none; }
+}
+
+/* ---------- 06p · 1안 판정 (도미노가 영역에서 사라진다) ----------
+   07p 와 같은 상자를 쓰고 같은 박자로 돈다. 다른 것은 무엇이 그 안에 있느냐뿐.
+   루프 1.8초 = 서 있음 0.75초 + 쓰러짐 0.35초 + 빈 상자 0.5초 + 되돌아옴 0.2초.
+
+   밑변을 축으로 눕힌다. rotate 만으로는 「넘어갔다」가 되고 그 뒤로도 화면에
+   남으므로, 다 눕고 나서 투명도를 떨어뜨려 영역에서 **빠져나가게** 한다. */
+@keyframes t1Fall {
+  0%, 41%  { transform: rotate(0deg);  opacity: 1; }
+  60%      { transform: rotate(78deg); opacity: 1; }
+  68%      { transform: rotate(78deg); opacity: 0; }
+  88%      { transform: rotate(78deg); opacity: 0; }
+  100%     { transform: rotate(0deg);  opacity: 1; }
+}
+.t1-dom {
+  transform-box: fill-box; transform-origin: 50% 100%;
+  animation: t1Fall 1.8s var(--ease-soft) infinite;
+}
+/* 상자가 비는 순간 테두리가 붉게 살아난다 — 그 사라짐이 곧 트리거다 */
+@keyframes t1Fire {
+  0%, 63%   { stroke: #fff; stroke-opacity: .85; }
+  68%, 88%  { stroke: #ff4d4d; stroke-opacity: 1; }
+  100%      { stroke: #fff; stroke-opacity: .85; }
+}
+.t1-zone { animation: t1Fire 1.8s var(--ease-soft) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .t1-dom, .t1-zone { animation: none; }
 }

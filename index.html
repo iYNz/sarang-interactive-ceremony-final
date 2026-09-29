@@ -196,25 +196,20 @@
             </div>
 
             <div class="lg-demo">
-              <div class="lg-stage">
-                <!-- 로고를 레이어로 얹지 않고 **합성이 끝난 판**을 통째로 건다.
-                     실제 엔진에서는 로고만 갈아 끼우지만, 시안에서 보여 줄 것은
-                     「그래서 어떻게 보이는가」다. 그림자 · 대비까지 잡힌 완성본이
-                     그 질문에 훨씬 잘 답한다. -->
-                <span class="lg-screen">
-                  <img class="lg-shot" id="lgShot" src="assets/sponsor/kb.jpg" alt="KB국민은행 로고가 들어간 마지막 화면" draggable="false" />
-                </span>
-                <img class="lg-frame" src="assets/mockup/mockup10.png" alt="현장 LED 월" draggable="false" />
+              <!-- 목업을 걷고 그림만 크게 본다. 이 장에서 볼 것은 「어떤 로고가
+                   와도 같은 자리에 같은 크기감으로 앉는가」이고, 그 답은 화면 안에
+                   있다. 벽 · 천장 · 바닥은 그 답을 작게 만들 뿐이다. -->
+              <div class="lg-car" id="lgCar">
+                <div class="lg-stagebox"><img class="lg-shot" id="lgShot" src="assets/sponsor/kb.jpg" alt="" draggable="false" /></div>
+                <div class="lg-strip" id="lgStrip"></div>
+                <div class="lg-picks" id="lgPicks"></div>
               </div>
-              <div class="lg-picks" id="lgPicks"></div>
-              <p class="lg-cap">CMS 에서 <b>배경이 빠진 PNG</b> 한 장을 올리면, 미리 만들어 둔 등장 이펙트에 맞춰
-                어떤 비율의 로고든 같은 자리에 들어갑니다. <b>담당자가 하는 일은 그것뿐입니다.</b></p>
             </div>
 
           </div>
         </div>
       </div>
-      <div class="foot-note">※ 로고 종횡비가 기업마다 다르므로(예: KB국민은행 국문 lockup 은 가로로 매우 깁니다) <b>어떤 비율이든 받아 내는 세이프박스</b>로 설계합니다.</div>
+      <div class="foot-note">※ CMS 에 <b>배경이 빠진 PNG 한 장</b>을 올리면 앞뒤 두 화면이 함께 바뀝니다 — <b>담당자가 하는 일은 그것뿐입니다.</b> 로고 종횡비가 기업마다 다르므로(예: KB국민은행 국문 lockup 은 가로로 매우 깁니다) <b>어떤 비율이든 받아 내는 세이프박스</b>로 설계합니다.</div>
     </section>
 
     <!-- 05 · 고르실 것 — 시작점 하나

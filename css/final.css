@@ -196,7 +196,9 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
 .ob-why b { color: #fff; font-weight: var(--fw-semibold); }
 
 /* ================= 07p · 로고 · 재사용 ================= */
-.lg-lay { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 32px; align-items: start; }
+/* 오른쪽 칸이 세로를 꽉 채워야 캐러셀이 남은 높이를 받아 폭을 정할 수 있다 —
+   align-items: start 면 칸이 내용만큼만 자라서 16:9 상자가 0 으로 무너진다 */
+.lg-lay { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 32px; align-items: stretch; height: 100%; }
 .lg-when { display: flex; flex-direction: column; gap: 10px; }
 .lg-w {
   display: flex; flex-direction: column; gap: 2px;
@@ -213,27 +215,53 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
 .lg-w--sum { background: none; border-style: dashed; border-color: rgba(255,255,255,.22); }
 .lg-w--sum .lg-w__k { color: var(--hl); }
 
-.lg-demo { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-.lg-stage { position: relative; width: 84%; align-self: center; border-radius: 14px; overflow: hidden; }
-.lg-screen {
-  position: absolute; z-index: 0; overflow: hidden;
-  left: 31.562%; top: 26.481%; width: 37.760%; height: 37.500%;
-  background: #05050a;
+.lg-demo { display: flex; flex-direction: column; min-width: 0; height: 100%; }
+/* ---------- 04p 캐러셀 ----------
+   목업을 걷고 그림만 크게 본다. 이 장에서 볼 것은 「어떤 로고가 와도 같은 자리에
+   같은 크기감으로 앉는가」이고, 그 답은 화면 안에 있다.
+   아래 썸네일 줄이 곧 인디케이터다 — 앞뒤 둘에만 「로고」 꼬리표가 붙어 있어,
+   누르기 전에 이미 「가운데는 비어 있다」가 읽힌다. */
+.lg-car { display: flex; flex-direction: column; align-items: center; gap: 10px; height: 100%; }
+.lg-stagebox {
+  flex: 1 1 auto; min-height: 0; aspect-ratio: 16 / 9;
+  position: relative; border-radius: 14px; overflow: hidden;
+  background: #05050a; border: 1px solid rgba(255,255,255,.08);
 }
-/* 후원사별 완성본을 통째로 건다 — 로고를 레이어로 얹지 않는다.
-   한때 배경 그라데이션 위에 로고 PNG 두 장을 얹었다. 자리는 맞았지만 그림자도
-   대비도 없어 「이렇게 나옵니다」의 답이 되지 못했다. 합성이 끝난 판을 걸면
-   종횡비가 제각각인 로고가 실제로 어떻게 앉는지가 그대로 보인다. */
 .lg-shot {
   position: absolute; inset: 0; display: block;
   width: 100%; height: 100%; object-fit: cover;
   opacity: 1; transition: opacity .28s var(--ease);
 }
 .lg-shot.is-swap { opacity: 0; }
-/* 화면이 한낮 들판이라 목업을 누르면 안쪽만 떠 보인다 — 밝기를 그대로 둔다 */
-.lg-frame { position: relative; z-index: 1; display: block; width: 100%; }
 
-.lg-picks { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.lg-strip { display: flex; justify-content: center; gap: 7px; flex: 0 0 auto; }
+.lg-th {
+  position: relative; width: 84px; aspect-ratio: 16 / 9;
+  border-radius: 7px; overflow: hidden; padding: 0;
+  border: 1.5px solid rgba(255,255,255,.14); background: #05050a;
+  opacity: .5; transition: opacity .25s var(--ease), border-color .25s var(--ease);
+}
+.lg-th img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lg-th:hover { opacity: .8; }
+.lg-th.is-on { opacity: 1; border-color: var(--hl); }
+/* 이름은 썸네일 위에 얹는다 — 줄 아래로 빼면 줄 높이가 두 배가 된다 */
+.lg-th__k {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 2px 3px;
+  font-size: 9.5px; font-weight: var(--fw-bold); letter-spacing: .02em; color: #fff;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,.78));
+}
+.lg-th__tag {
+  position: absolute; top: 3px; right: 3px; padding: 1px 5px; border-radius: 4px;
+  font-size: 8.5px; font-weight: var(--fw-bold); letter-spacing: .04em;
+  color: #0b0b0b; background: var(--hl);
+}
+/* 로고가 있는 두 장만 테두리를 살려 둔다 — 꺼져 있을 때도 어디가 앞뒤인지 보인다 */
+.lg-th--logo { border-color: rgba(255,214,150,.45); }
+
+.lg-picks { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 7px; flex: 0 0 auto; }
+/* 가운데 컷에서는 잠근다 — 여기서 바뀌는 것이 있으면 「로고 없음」이 거짓말이 된다 */
+.lg-picks.is-off { opacity: .38; }
+.lg-picks.is-off .lg-pick { cursor: default; }
 .lg-picks__k {
   margin-right: 4px;
   font-size: 11.5px; font-weight: var(--fw-bold); letter-spacing: .05em;
@@ -248,8 +276,6 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
 .lg-pick:hover { color: #fff; border-color: rgba(255,255,255,.3); }
 .lg-pick.is-on { color: #0b0b0b; background: var(--hl); border-color: var(--hl); }
 .lg-picks__n { font-size: 12.5px; color: rgba(255,255,255,.42); }
-.lg-cap { font-size: 14px; line-height: 1.66; color: rgba(255,255,255,.6); }
-.lg-cap b { color: #fff; font-weight: var(--fw-semibold); }
 
 /* ================= 08p · 톤 · 사운드 ================= */
 .tn-lay { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }

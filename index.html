@@ -5,13 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>나눔이벤트 연출 시안 · 도미노 — 1안 · 2안 (사랑의열매 × airpass)</title>
 
-  <!-- 링크 미리보기. og:image 는 절대 URL 이어야 한다 — 상대 경로는 크롤러가 못 찾는다.
-       도메인이 정해지면 og:url · og:image 를 같이 고친다. -->
+  <!-- 링크 미리보기. og:image 가 없으면 크롤러가 본문에서 그림을 골라 오는데,
+       표지의 airpass.png(12KB · 가로 로고)가 잡혀 썸네일이 작은 로고로 떴다.
+       10p 와 같은 로고 판을 1200×630 으로 잘라 걸어 둔다.
+       og:image 와 og:url 은 **절대 URL 이어야 한다** — 상대 경로는 크롤러가
+       못 찾는다. 자체 도메인이 붙으면 이 둘을 같이 고친다. -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="airpass" />
   <meta property="og:locale" content="ko_KR" />
   <meta property="og:title" content="나눔이벤트 연출 시안 · 도미노 — 1안 · 2안" />
   <meta property="og:description" content="대표자 두 사람이 도미노를 쓰러뜨리면, 마을의 길을 따라 번져 온도를 채우고 마을 전체가 밝아진다." />
+  <meta property="og:url" content="https://sarang-interactive-ceremony-final.netlify.app/" />
+  <meta property="og:image" content="https://sarang-interactive-ceremony-final.netlify.app/assets/og-cover.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="airpass" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://sarang-interactive-ceremony-final.netlify.app/assets/og-cover.jpg" />
   <meta name="description" content="희망2027나눔캠페인 성금 전달식 나눔이벤트 연출 시안 — 도미노 1안 · 2안" />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />

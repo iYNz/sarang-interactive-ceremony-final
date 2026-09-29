@@ -411,14 +411,14 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
    달력 둘을 화면 폭으로 키우고 일정을 칸 안에 직접 적는다. 범례를 옆에 세웠더니
    달력이 작아지고 일정은 또 옆에서 읽어야 해서 시선이 두 번 움직였다.
    못 박힌 날은 흰 띠, 아직 폭으로만 잡힌 구간은 회색 띠, 서로 묶인 둘은 붉은 띠. */
-.sc-cal { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-bottom: 18px; }
+.sc-cal { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
 .cal {
   padding: 16px 18px 18px; border-radius: 14px;
   background: rgba(255,255,255,.03); border: 1px solid var(--card-line);
 }
 .cal__hd {
-  font-family: var(--font-num); font-size: 17px; font-weight: var(--fw-bold);
-  letter-spacing: .06em; color: #fff; margin-bottom: 12px;
+  font-family: var(--font-num); font-size: 18px; font-weight: var(--fw-bold);
+  letter-spacing: .06em; color: #fff; margin-bottom: 14px;
 }
 .cal__w { display: grid; grid-template-columns: repeat(7, 1fr); margin-bottom: 4px; }
 .cal__w span {
@@ -428,7 +428,8 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
 .cal__w .is-sun { color: rgba(255,120,120,.6); }
 
 /* 한 주 — 칸 일곱 개 위에 일정 띠를 얹는다 */
-.cal__wk { position: relative; display: grid; grid-template-columns: repeat(7, 1fr); height: 60px; }
+/* 한 주 — 날짜 줄 + 일정 띠 세 줄(30 + 3×20) 이 들어갈 높이 */
+.cal__wk { position: relative; display: grid; grid-template-columns: repeat(7, 1fr); height: 104px; }
 .cal__d {
   display: flex; align-items: flex-start; justify-content: center; padding-top: 6px;
   font-family: var(--font-num); font-size: 15px; font-weight: var(--fw-semibold);
@@ -438,16 +439,16 @@ img.ob-var { width: 100%; height: 100%; object-fit: cover; }
 .cal__d.is-on { color: #fff; font-weight: var(--fw-bold); }
 
 .cal__bar {
-  position: absolute; top: 30px; height: 22px; border-radius: 6px;
-  display: flex; align-items: center; padding: 0 9px; overflow: hidden;
+  position: absolute; height: 17px; border-radius: 5px;
+  display: flex; align-items: center; padding: 0 8px; overflow: hidden;
 }
 .cal__bar b {
-  font-size: 12px; font-weight: var(--fw-bold); letter-spacing: -0.01em;
+  font-size: 11px; font-weight: var(--fw-bold); letter-spacing: -0.015em;
   white-space: nowrap;
 }
 .cal__bar.is-fix  { background: #fff; }
 .cal__bar.is-fix b  { color: #0b0b0b; }
-.cal__bar.is-span { background: rgba(255,255,255,.22); border: 1px solid rgba(255,255,255,.34); }
+.cal__bar.is-span { background: rgba(255,255,255,.3); border: 1px solid rgba(255,255,255,.44); }
 .cal__bar.is-span b { color: #fff; }
 .cal__bar.is-peak { background: rgba(224,49,49,.42); border: 1px solid rgba(255,107,107,.7); }
 .cal__bar.is-peak b { color: #fff; }

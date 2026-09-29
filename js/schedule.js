@@ -16,13 +16,19 @@
 
   var MONTHS = [{ y: 2026, m: 10 }, { y: 2026, m: 11 }];
 
-  /* kind: 'fix' 못 박힌 날 · 'peak' 밀리면 뒤가 통째로 밀리는 구간 · 'span' 그 밖 */
+  /* kind: 'fix' 못 박힌 날 · 'peak' 밀리면 뒤가 통째로 밀리는 구간 · 'span' 그 밖
+     lane: 같은 주에 여러 건이 겹치므로 줄을 나눠 쌓는다.
+       0  마일스톤 — 서로 겹치지 않는 점 · 짧은 구간
+       1  제작 — 한 달을 통으로 덮는 바탕
+       2  현장 설치 — 제작과 겹치는 마지막 주 */
   var MARKS = [
-    { kind: 'fix',  y: 2026, m: 9,  d1: 29, d2: 29, t: '본 시안 제출' },
-    { kind: 'fix',  y: 2026, m: 10, d1: 9,  d2: 9,  t: '계약' },
-    { kind: 'peak', y: 2026, m: 10, d1: 12, d2: 23, t: '미디어 서버 PC 반입' },
-    { kind: 'span', y: 2026, m: 11, d1: 2,  d2: 6,  t: '현장 시뮬레이션 · 리허설' },
-    { kind: 'peak', y: 2026, m: 11, d1: 9,  d2: 13, t: '운용 시작' }
+    { lane: 0, kind: 'fix',  y: 2026, m: 9,  d1: 29, d2: 29, t: '본 시안 제출' },
+    { lane: 0, kind: 'fix',  y: 2026, m: 10, d1: 9,  d2: 9,  t: '계약' },
+    { lane: 0, kind: 'span', y: 2026, m: 11, d1: 2,  d2: 6,  t: '현장 시뮬레이션 · 리허설' },
+    { lane: 0, kind: 'peak', y: 2026, m: 11, d1: 9,  d2: 13, t: '운용 시작' },
+    { lane: 1, kind: 'span', y: 2026, m: 9,  d1: 30, d2: 30, t: '제작 — 도미노 씬 · 로고 교체 CMS · 환영 콘텐츠 · 큐 관리 시스템', run: 1 },
+    { lane: 1, kind: 'span', y: 2026, m: 10, d1: 1,  d2: 30, t: '제작 — 도미노 씬 · 로고 교체 CMS · 환영 콘텐츠 · 큐 관리 시스템', run: 1 },
+    { lane: 2, kind: 'peak', y: 2026, m: 10, d1: 26, d2: 30, t: '미디어 서버 PC 반입 · 센서 설치' }
   ];
 
   var DOW = ['일', '월', '화', '수', '목', '금', '토'];
@@ -31,40 +37,52 @@
   function last(y, m) { return new Date(y, m, 0).getDate(); }
   function dow(y, m, d) { return new Date(y, m - 1, d).getDay(); }
 
-  function markAt(y, m, d) {
+  /* 달을 넘어가는 구간은 MARKS 에 두 줄로 적되 `run` 이 같으면 한 건으로 센다 —
+     이름을 두 번 적지 않기 위해서다. */
+  function markAt(y, m, d, lane) {
     for (var i = 0; i < MARKS.length; i++) {
       var k = MARKS[i];
-      if (k.y === y && k.m === m && d >= k.d1 && d <= k.d2) return k;
+      if (k.lane === lane && k.y === y && k.m === m && d >= k.d1 && d <= k.d2) return k;
     }
     return null;
   }
+  function keyOf(k) { return k.run ? 'run' + k.run : k.t; }
+  var LANES = 3;
 
   /* 한 주(7칸)를 그리고, 그 주에 걸친 일정을 **칸 위에 띠로 얹는다.**
-     띠는 주 단위로 잘라 놓는다 — 한 구간이 두 주에 걸치면 띠도 둘이 되고,
-     각 띠는 자기 줄에서 시작 칸부터 끝 칸까지만 덮는다. 이름은 그 구간이
-     처음 나오는 줄에만 적는다(같은 글씨가 두 줄에 뜨면 두 건으로 읽힌다). */
-  function week(cells, seen) {
-    var bars = '', i = 0;
+     띠는 주 단위로 잘라 놓는다 — 한 구간이 여러 주에 걸치면 띠도 여럿이 되고,
+     각 띠는 자기 줄에서 시작 칸부터 끝 칸까지만 덮는다.
+     이름은 **그 구간이 가장 넓게 깔리는 줄**에 한 번만 적는다. 첫 줄에 적으면
+     9/30 처럼 한 칸에서 시작하는 구간의 이름이 잘린다. */
+  function weekBars(cells, lane) {
+    var out = [], i = 0;
     while (i < 7) {
-      var c = cells[i], mk = c ? markAt(c.y, c.m, c.d) : null;
+      var c = cells[i], mk = c ? markAt(c.y, c.m, c.d, lane) : null;
       if (!mk) { i++; continue; }
       var j = i;
-      while (j + 1 < 7 && cells[j + 1] && markAt(cells[j + 1].y, cells[j + 1].m, cells[j + 1].d) === mk) j++;
-      var first = !seen[mk.t];
-      seen[mk.t] = true;
-      bars += '<span class="cal__bar is-' + mk.kind + '"' +
-                ' style="left:' + (i / 7 * 100) + '%;width:' + ((j - i + 1) / 7 * 100) + '%">' +
-                (first ? '<b>' + esc(mk.t) + '</b>' : '') +
-              '</span>';
+      while (j + 1 < 7 && cells[j + 1] &&
+             keyOf(markAt(cells[j + 1].y, cells[j + 1].m, cells[j + 1].d, lane) || {}) === keyOf(mk)) j++;
+      out.push({ key: keyOf(mk), t: mk.t, kind: mk.kind, lane: lane, from: i, span: j - i + 1 });
       i = j + 1;
     }
+    return out;
+  }
+
+  function week(cells, bars) {
     return '<div class="cal__wk">' +
              cells.map(function (c) {
-               var mk = markAt(c.y, c.m, c.d);
+               var on = false;
+               for (var L = 0; L < LANES; L++) if (markAt(c.y, c.m, c.d, L)) { on = true; break; }
                return '<span class="cal__d' + (c.out ? ' is-out' : '') +
-                      (mk ? ' is-on' : '') + '">' + c.d + '</span>';
+                      (on ? ' is-on' : '') + '">' + c.d + '</span>';
              }).join('') +
-             bars +
+             bars.map(function (b) {
+               return '<span class="cal__bar is-' + b.kind + '"' +
+                      ' style="left:' + (b.from / 7 * 100) + '%;width:' + (b.span / 7 * 100) + '%' +
+                      ';top:' + (30 + b.lane * 20) + 'px">' +
+                      (b.label ? '<b>' + esc(b.t) + '</b>' : '') +
+                      '</span>';
+             }).join('') +
            '</div>';
   }
 
@@ -82,8 +100,18 @@
       cells.push({ y: ny, m: nm, d: n, out: true });
     }
 
-    var seen = {}, rows = '';
-    for (var w = 0; w < cells.length; w += 7) rows += week(cells.slice(w, w + 7), seen);
+    /* 줄마다 띠를 먼저 모두 구해 놓고, 같은 구간 중 가장 넓은 것에만 이름을 단다 */
+    var weeks = [], widest = {};
+    for (var w = 0; w < cells.length; w += 7) {
+      var wk = cells.slice(w, w + 7), bars = [];
+      for (var L = 0; L < LANES; L++) bars = bars.concat(weekBars(wk, L));
+      bars.forEach(function (b) {
+        if (!widest[b.key] || b.span > widest[b.key].span) widest[b.key] = b;
+      });
+      weeks.push({ cells: wk, bars: bars });
+    }
+    Object.keys(widest).forEach(function (k) { widest[k].label = true; });
+    var rows = weeks.map(function (o) { return week(o.cells, o.bars); }).join('');
 
     return '' +
       '<div class="cal">' +

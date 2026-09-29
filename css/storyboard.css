@@ -953,3 +953,11 @@
 @media (prefers-reduced-motion: reduce) {
   .t1-dom, .t1-zone { animation: none; }
 }
+
+/* ---------- 08p 큐 콘솔 · 무대 위 사람 ----------
+   03p 와 같은 도형을 같은 좌표계(목업 16:9)로 얹는다. 목업 프레임(z 1) 위,
+   멘트 판(z 2) 아래에 둔다 — 사람이 글자를 덮으면 멘트가 안 읽힌다. */
+.cue-mock > .cue-ppl {
+  position: absolute; inset: 0; z-index: 1;
+  width: 100%; height: 100%; pointer-events: none;
+}

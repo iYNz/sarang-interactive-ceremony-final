@@ -59,7 +59,7 @@
   }).join('');
 
   /* 버튼 줄에 설명을 붙였었다. 고를 때마다 길이가 달라져 가운데 정렬이 흔들렸고,
-     어차피 아래 각주가 같은 말을 하고 있었다. 버튼만 남긴다. */
+     위 본문이 이미 같은 말을 하고 있다. 버튼만 남긴다. */
   picks.innerHTML =
     '<span class="lg-picks__k">후원사 로고 · CMS 등록</span>' +
     SPONSORS.map(function (p, i) {

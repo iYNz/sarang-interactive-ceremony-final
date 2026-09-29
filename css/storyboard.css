@@ -659,18 +659,6 @@
 #engine .list li { font-size: 16px; padding: 9px 0 9px 24px; line-height: 1.5; }
 #engine .list li::before { top: 8px; }
 
-/* ---------- 조작 힌트 ---------- */
-.sb-hint {
-  position: absolute; left: var(--pad-x); bottom: 52px; z-index: 5;
-  display: flex; flex-direction: column; gap: 5px;
-  font-size: 14px; color: rgba(255,255,255,.34); letter-spacing: -0.01em;
-}
-.sb-hint b { color: rgba(255,255,255,.62); font-weight: var(--fw-semibold); }
-.sb-hint__note { font-size: 13px; color: rgba(255,255,255,.26); }
-/* 주석 줄 안의 강조는 색을 올리지 않는다 — 같은 색으로 두고 굵기만 준다.
-   흰색으로 띄우면 각주가 본문처럼 튀어 읽는 순서가 흔들린다. */
-.sb-hint__note b { color: inherit; font-weight: var(--fw-bold); }
-
 /* ---------- 05p 큐 콘솔 · 목업 정합 ----------
    큐 프리뷰의 프레임을 2p 와 같은 mockup10 으로 바꿨다. 공용 스타일(proposal.css)의
    창 좌표는 이전 목업(mockup5) 실측값이라 미세하게 어긋나므로, mockup10 의 알파

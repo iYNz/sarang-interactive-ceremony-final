@@ -18,14 +18,18 @@
 (function () {
   'use strict';
 
+  /* `intro` 를 적으면 인트로 프레임에서 그 파일을 쓴다. KB 는 03p CUT 01 과 같은
+     판을 건다 — 따로 뽑아 둔 intro-kb 는 같은 장면을 더 좁게 잡아 사랑의열매
+     로고가 크게 들어가 있었다. 같은 화면이 3p 와 4p 에서 다르게 보이면
+     「같은 영상의 첫 장」이라는 말이 흔들린다. */
   var SPONSORS = [
-    { k: 'KB국민은행',   file: 'kb' },
+    { k: 'KB국민은행',   file: 'kb', intro: 'assets/led/cut01.jpg' },
     { k: 'HYUNDAI',      file: 'hyundai' },
     { k: '우리은행',     file: 'woori' },
     { k: '신한금융그룹', file: 'shinhan' }
   ];
 
-  function introSrc(sponsor) { return 'assets/sponsor/intro-' + sponsor.file + '.jpg'; }
+  function introSrc(sponsor) { return sponsor.intro || 'assets/sponsor/intro-' + sponsor.file + '.jpg'; }
   function outroSrc(sponsor) { return 'assets/sponsor/' + sponsor.file + '.jpg'; }
 
   /* 가운데는 03p 의 컷 02~16 을 순서대로 전부 건다 */

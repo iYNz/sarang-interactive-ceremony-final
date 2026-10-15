@@ -10,3 +10,6 @@ assets/for-img/ref/
 # 서울 도심 전환 생성 반복본 — 92MB 라 저장소에 올리지 않는다.
 # publish 가 루트라 올리면 그대로 공개 URL 로 열리기도 한다. 디스크에는 둔다.
 assets/edit/
+
+# 뽑아 둔 PDF — 파일로 전달한다. publish 가 루트라 올리면 공개 URL 로도 열린다.
+dist/

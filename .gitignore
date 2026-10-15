@@ -6,3 +6,7 @@ desktop.ini
 # 트리거 원본 — 2.65GB 라 저장소에 올리지 않는다. 디스크에는 그대로 둔다.
 # (netlify.toml 이 assets/for-img/* 를 404 로 막고 있고, 배포에도 필요 없다)
 assets/for-img/ref/
+
+# 서울 도심 전환 생성 반복본 — 92MB 라 저장소에 올리지 않는다.
+# publish 가 루트라 올리면 그대로 공개 URL 로 열리기도 한다. 디스크에는 둔다.
+assets/edit/
